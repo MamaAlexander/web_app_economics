@@ -1,3 +1,6 @@
+from termcolor import colored
+import sys
+
 class country:
     def __init__(self, name):
         self.name = name
@@ -10,9 +13,9 @@ class country:
                                                       ('Restrict/Allow', )]),
                                            ('Share', 'Limit the handing of external shares'),
                                            ('Banks', 'Change the key rate'),
-                                           ('Change the size of leverage'),
-                                           ('Change tax size'),
-                                           ('Insider trading')]),
+                                           ('Change the size of leverage', ),
+                                           ('Change tax size', ),
+                                           ('Insider trading', )]),
                         ('Households', [('Approve transfers'),
                                         ('Change tax size')]),
                         ('Firms', [('Approve transfers', [('To support little and medium buisnesses'),
@@ -33,16 +36,39 @@ class country:
 
         print('Your country is', self.name, 'with', self.gpd, 'number of GPD and', self.gov_budget, 'number of government budget!')
 
-    def show_actions(self):
+    def show_actions(self, flag):
+        if flag == 0:
+            print('What sphere would you choose to change:')
+            for i in range(len(self.actions)):
+                print(colored(self.actions[i][0], 'green'))
+            x = input()
+            if x == 'exit':
+                print(colored('GAME OVER', 'red'))
+                sys.exit()
+            for i in range(len(self.actions)):
+                if x == self.actions[i][0]:
+                    for j in range(len(self.actions[i][0])):
+                        print(colored(self.actions[i][1][j][0], 'green'))
+                
+            
         
 
 a = input('Name your country:')
+if a == 'exit':
+    print(colored('GAME OVER', 'red'))
+    sys.exit()
 b = country(a)
 while True:
     print('What would you like to change in your country?')
-    x = input('Write actions to see what you can change:')
+    x = input('Write "actions" to see what you can change:')
+
     if x == 'actions':
-        b.show_actions()
+        b.show_actions(0)
+
+    elif x == 'exit':
+        print(colored('GAME OVER', 'red'))
+        sys.exit()
+
     else:
-        print('Try again')
+        print(colored('Try again', 'red'))
         continue
