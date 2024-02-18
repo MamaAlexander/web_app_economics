@@ -14,26 +14,26 @@ class country:
                                                             ('Restrict/Allow')]),
                                                ('Share...', [('Limit the handing of external shares')]),
                                                ('Banks...',  [('Change the key rate')]),
-                                               ('Change the size of leverage'),
-                                               ('Change tax size'),
-                                               ('Insider trading')]),
-                        ('Households...', [('Approve transfers'),
-                                           ('Change tax size')]),
-                        ('Firms...', [('Approve transfers...', [('To support little and medium buisnesses'),
-                                                                ('For innovations')]),
-                                      ('Change tax size'),
-                                      ('Change tax size for external firms')]),
-                        ('Market of goods and services...', [('limit the prices to...', [('Grain flour'),
-                                                                                         ('Fruit and vegetable'),
-                                                                                         ('Flavoring'),
-                                                                                         ('Confectionery'),
-                                                                                         ('Dairy'),
-                                                                                         ('Egg'),
-                                                                                         ('Meat'),
-                                                                                         ('Fish')]),
-                                                             ('Change the excise tax rate')]),
-                        ('Another world...', [('Make duties'),
-                                           ('Embargo')])]
+                                               ('Change the size of leverage', ''),
+                                               ('Change tax size', ''),
+                                               ('Insider trading', '')]),
+                        ('Households...', [('Approve transfers', ''),
+                                           ('Change tax size', '')]),
+                        ('Firms...', [('Approve transfers...', [('To support little and medium buisnesses', ''),
+                                                                ('For innovations', '')]),
+                                      ('Change tax size', ''),
+                                      ('Change tax size for external firms', '')]),
+                        ('Market of goods and services...', [('limit the prices to...', [('Grain flour', ''),
+                                                                                         ('Fruit and vegetable', ''),
+                                                                                         ('Flavoring', ''),
+                                                                                         ('Confectionery', ''),
+                                                                                         ('Dairy', ''),
+                                                                                         ('Egg', ''),
+                                                                                         ('Meat', ''),
+                                                                                         ('Fish', '')]),
+                                                             ('Change the excise tax rate', '')]),
+                        ('Another world...', [('Make duties', ''),
+                                           ('Embargo', '')])]
 
         print('Your country is', self.name, 'with', self.gpd, 'number of GPD and', self.gov_budget, 'number of government budget!')
 
@@ -41,7 +41,7 @@ class country:
 
     def game_over(self, x):
         if x == 'exit':
-            print(colored('GAME OVER', 'red'))
+            print(colored('G  A  M  E    O  V  E  R', 'red'))
             sys.exit()  
         else: 
             return 0
@@ -50,28 +50,22 @@ class country:
 
     def show_actions(self):
         index1 = 0
-        index2 = 0
         print('What sphere would you choose to change:')
         for i in range(len(self.actions)):
             print(colored(self.actions[i][0], 'green'))
         x = input()
         self.game_over(x)
         for i in range(len(self.actions)):
-            if x == self.actions[i][0] and len(self.actions[i][0]) == 1: # checking is it an action or sphere
+            if x == self.actions[i][0]:
                 index1 = i
-                for j in range(len(self.actions[i][0])):
+                for j in range(len(self.actions[i][1])):
                     print(colored(self.actions[i][1][j][0], 'green'))
         x = input()
         self.game_over(x)
-        for j in range(len(self.actions[index1][0])):
-            if x == self.actions[i][0][j][0] and len(self.actions[i][0][j][0]) == 1:
-                for k in range(len(self.actions[index1][0][j][0][1])):
-                    print(colored(self.actions[index1][0][j][0][1][k], 'red'))
-
-
-
-
-      
+        for j in range(len(self.actions[index1][1])):
+            if x == self.actions[index1][1][j][0]:
+                for k in range(len(self.actions[index1][1][j][1])):
+                    print(colored(self.actions[index1][1][j][1][k], 'green'))
 
 
 
@@ -82,7 +76,7 @@ class country:
 
 a = input('Name your country:')
 if a == 'exit':
-    print(colored('GAME OVER', 'red'))
+    print(colored('G \t A \t M \t E \t \t O \t V \t E \t R', 'red'))
     sys.exit()
 b = country(a)
 while True:
