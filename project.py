@@ -7,15 +7,15 @@ class country:
         self.credits = 20
         self.gov_budget = 100000000000
         self.gpd = 1000
-        self.actions = [("Finance market", [('Stocks', [('Limit income', ),
-                                                       ('Restrict/Allow', )]),
-                                           ('Bonds', [('Limit income', ),
-                                                      ('Restrict/Allow', )]),
-                                           ('Share', 'Limit the handing of external shares'),
+        self.actions = [("Finance market", [('Stocks', [('Limit income'),
+                                                       ('Restrict/Allow')]),
+                                           ('Bonds', [('Limit income'),
+                                                      ('Restrict/Allow')]),
+                                           ('Share', [('Limit the handing of external shares')]),
                                            ('Banks', 'Change the key rate'),
-                                           ('Change the size of leverage', ),
-                                           ('Change tax size', ),
-                                           ('Insider trading', )]),
+                                           ('Change the size of leverage'),
+                                           ('Change tax size'),
+                                           ('Insider trading')]),
                         ('Households', [('Approve transfers'),
                                         ('Change tax size')]),
                         ('Firms', [('Approve transfers', [('To support little and medium buisnesses'),
@@ -36,22 +36,21 @@ class country:
 
         print('Your country is', self.name, 'with', self.gpd, 'number of GPD and', self.gov_budget, 'number of government budget!')
 
-    def show_actions(self, flag):
-        if flag == 0:
-            print('What sphere would you choose to change:')
-            for i in range(len(self.actions)):
-                print(colored(self.actions[i][0], 'green'))
-            x = input()
-            if x == 'exit':
-                print(colored('GAME OVER', 'red'))
-                sys.exit()
-            for i in range(len(self.actions)):
-                if x == self.actions[i][0]:
-                    for j in range(len(self.actions[i][0])):
-                        print(colored(self.actions[i][1][j][0], 'green'))
-                
-            
-        
+    def show_actions(self):
+        print('What sphere would you choose to change:')
+        for i in range(len(self.actions)):
+            print(colored(self.actions[i][0], 'green'))
+        x = input()
+        if x == 'exit':
+            print(colored('GAME OVER', 'red'))
+            sys.exit()
+        for i in range(len(self.actions)):
+            if x == self.actions[i][0] and (len(self.actions[i][0]) == 1 or (len(self.actions[i][0]) == 2 and self.actions[i][1] != '')): # checking is it an action or topic
+                for j in range(len(self.actions[i][0])):
+                    print(colored(self.actions[i][1][j][0], 'green'))
+
+
+
 
 a = input('Name your country:')
 if a == 'exit':
@@ -63,7 +62,7 @@ while True:
     x = input('Write "actions" to see what you can change:')
 
     if x == 'actions':
-        b.show_actions(0)
+        b.show_actions()
 
     elif x == 'exit':
         print(colored('GAME OVER', 'red'))
