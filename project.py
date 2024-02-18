@@ -41,7 +41,7 @@ class country:
 
     def game_over(self, x):
         if x == 'exit':
-            print(colored('G  A  M  E    O  V  E  R', 'red'))
+            print(colored('GAME OVER', 'red'))
             sys.exit()  
         else: 
             return 0
@@ -76,7 +76,7 @@ class country:
 
 a = input('Name your country:')
 if a == 'exit':
-    print(colored('G \t A \t M \t E \t \t O \t V \t E \t R', 'red'))
+    print(colored('GAME OVER', 'red'))
     sys.exit()
 b = country(a)
 while True:
