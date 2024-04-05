@@ -9,6 +9,7 @@
     <title>Document</title>
 </head>
 <body>
+    <h1>Registration page</h1>
     <form action="connect.php" method="POST">
         <label>Name:</label><br>
         <input type="name" name="name" id="name" required><br><br>
@@ -49,6 +50,8 @@
         
         <input type="submit" value="Sign in">
     </form>
+    <br>
+    <a href="../index.php">Log in</a> <br>
     <br>
 </body>
 </html>

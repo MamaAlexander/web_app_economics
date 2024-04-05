@@ -10,13 +10,16 @@ if (isset($_POST["email"]) && isset($_POST["password"])) {
     $sql = "SELECT *
     FROM users_ids
     WHERE email = '$email'
-      AND password = '$password';
-    ";
-    if($conn->query($sql)){
-        echo "Успешная авторизация";
-
+      AND password = '$password';";
+    $result = $conn->query($sql);
+    if($result->num_rows >= 1){
+        echo "Успешная авторизация" . "<br>";
+        echo '<a href="profile/profile.php">Перейти в личный кабинет</a>';
+        die();
     } else{
-        echo "Ошибка: " . $conn->error;
+        echo "Неверный email или пароль" . "<br>";
+        echo '<a href="index.php">Попробовать ещё раз</a>';
+
     }
     $conn->close();
 }

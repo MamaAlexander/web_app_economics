@@ -9,6 +9,7 @@
     <title>Document</title>
 </head>
 <body>
+    <h1>Log in</h1>
     <form action="auth_check.php" method="post">
         <label>E-mail:</label><br>
         <input type="email" name="email" id="email" required><br><br>
@@ -20,20 +21,3 @@
     <a href="reg/registration.php">Don't have an account?</a>
 </body>
 </html>
-<!-- 
-<?php 
-    // $email = $_POST["email"];
-    // $password = $_POST["password"];
-    // $flag = 0;
-    // if(strlen($password) < 8){
-    //     echo "<br>" . "Password is not valid";
-    //     $flag++;
-    // } 
-    // if(!filter_var($email, FILTER_VALIDATE_EMAIL)){
-    //     echo "<br>" . "E-mail is not valid";
-    //     $flag++;
-    // }
-    // if($flag > 0){
-    //     echo "<br>" . "Try again!";
-    // }
-?> -->
