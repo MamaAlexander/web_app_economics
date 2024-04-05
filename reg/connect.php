@@ -1,19 +1,20 @@
 <?php
-if($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['submit'])) {
-    $conn = mysqli_connect('localhost', 'root', 'your_password', 'web_app_econ', '3306', '/Applications/XAMPP/xamppfiles/var/mysql/mysql.sock') or die("Connection Failed:" .mysqli_connect_error());
-    if(isset($_POST['name']) && isset($_POST['email']) && isset($_POST['password'])) {
-        $name = $_POST['name'];
-        $email = $_POST['email'];
-        $password = $_POST['password'];
-
-        $sql = "INSERT INTO 'users_ids' ('name', 'email', 'password') VALUES ('$name', '$email', '$password')";
-        $query = mysqli_query($conn, $sql);
-        if($query) {
-            echo 'Entry Successfull';
-        }
-        else {
-            echo 'Error Occured';
-        }
+if (isset($_POST["name"]) && isset($_POST["email"]) && isset($_POST["password"])) {
+      
+    $conn = new mysqli("localhost", "root", "", "web_app_econ");
+    if($conn->connect_error){
+        die("Ошибка: " . $conn->connect_error);
     }
+    $name = $conn->real_escape_string($_POST["name"]);
+    $email = $conn->real_escape_string($_POST["email"]);
+    $password = $conn->real_escape_string($_POST["password"]);
+    $sql = "INSERT INTO users_ids (name, email, password) VALUES ('$name', '$email', '$password')";
+    if($conn->query($sql)){
+        echo "Данные успешно добавлены";
+
+    } else{
+        echo "Ошибка: " . $conn->error;
+    }
+    $conn->close();
 }
 ?>

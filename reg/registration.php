@@ -9,7 +9,7 @@
     <title>Document</title>
 </head>
 <body>
-    <form action="connect.php" method="post">
+    <form action="connect.php" method="POST">
         <label>Name:</label><br>
         <input type="name" name="name" id="name" required><br><br>
 
