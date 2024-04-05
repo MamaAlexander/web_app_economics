@@ -11,24 +11,25 @@
 <body>
     <form action="index.php" method="post">
         <label>E-mail:</label><br>
-        <input type="text" name="login"><br>
+        <input type="email" name="email" id="email" required><br><br>
         <label>Password:</label><br>
-        <input type="password" name="password"><br>
+        <input type="password" name="password" id="password" required><br><br>
         <input type="submit" value="Log in">
     </form>
-    <a href="https://youtu.be/PFRGWuMPx4E?si=d-Lvj_InAnyP7l9-">Don't have an account?</a>
+    <br>
+    <a href="reg/registration.php">Don't have an account?</a>
 </body>
 </html>
 
 <?php
-    $login = $_POST["login"];
+    $email = $_POST["email"];
     $password = $_POST["password"];
     $flag = 0;
     if(strlen($password) < 8){
         echo "<br>" . "Password is not valid";
         $flag++;
     } 
-    if(!filter_var($login, FILTER_VALIDATE_EMAIL)){
+    if(!filter_var($email, FILTER_VALIDATE_EMAIL)){
         echo "<br>" . "E-mail is not valid";
         $flag++;
     }
