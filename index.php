@@ -40,6 +40,7 @@ if (isset($_POST["email"]) && isset($_POST["password"])) {
                 'nbf'		=>	time(),
                 'exp'		=>	time() + 3600*24,
                 'data'	=> array(
+                    'name'	=>	$data['name'],
                     'email'	=>	$data['email']
                 )
             ),
@@ -53,7 +54,7 @@ if (isset($_POST["email"]) && isset($_POST["password"])) {
         $sql3 = "UPDATE users_ids
         SET last_session = '$temp'
         WHERE email = '$email';";
-        $result = $conn->query($sql);
+        $result = $conn->query($sql3);
         header('location: profile/profile.php');
 
     } else {

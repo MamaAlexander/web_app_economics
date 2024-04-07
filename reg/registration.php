@@ -22,7 +22,7 @@ if (isset($_POST["name"]) && isset($_POST["email"]) && isset($_POST["password"])
     } else if ($_POST["password"] != $_POST["password2"]) {
         $error = "Пароли не совпадают";
     } else {
-        $sql = "INSERT INTO users_ids (name, email, password, last_session) VALUES ('$name', '$email', '$password', '0')";
+        $sql = "INSERT INTO users_ids (name, email, password, last_session, is_verified) VALUES ('$name', '$email', '$password', '0', 'Not Verified')";
     
         if ($conn->query($sql)) {
             $error = "Данные успешно добавлены";
