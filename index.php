@@ -28,6 +28,7 @@ if (isset($_POST["email"]) && isset($_POST["password"])) {
 		$statement = $connect->prepare($query);
 		$statement->execute([$_POST["email"]]);
 		$data = $statement->fetch(PDO::FETCH_ASSOC);
+    
     if($result->num_rows >= 1 && $data['password'] == $_POST["password"]) {
         $key = '1a3LM3W966D6QTJ5BJb9opunkUcw_d09NCOIJb9QZTsrneqOICoMoeYUDcd_NfaQyR787PAH98Vhue5g938jdkiyIZyJICytKlbjNBtebaHljIR6-zf3A2h3uy6pCtUFl1UhXWnV6madujY4_3SyUViRwBUOP-UudUL4wnJnKYUGDKsiZePPzBGrF4_gxJMRwF9lIWyUCHSh-PRGfvT7s1mu4-5ByYlFvGDQraP4ZiG5bC1TAKO_CnPyd1hrpdzBzNW4SfjqGKmz7IvLAHmRD-2AMQHpTU-hN2vwoA-iQxwQhfnqjM0nnwtZ0urE6HjKl6GWQW-KLnhtfw5n_84IRQ';
         $token = JWT::encode(
@@ -106,7 +107,7 @@ if (isset($_POST["email"]) && isset($_POST["password"])) {
 			    				</div>
 			    				<div class="text-center">
 			    					<input type="submit" name="login" class="btn btn-primary" value="Log in" />
-                    <a href="reg/registration.php"><input type="button" name="login" class="btn btn-primary" value="Sing up"></a>
+                                    <a href="reg/registration.php"><input type="button" name="login" class="btn btn-primary" value="Sing up"></a>
 			    				</div>
 		    				</form>
 		    			</div>
