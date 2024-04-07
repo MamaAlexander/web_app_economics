@@ -2,11 +2,14 @@
     $title = "Main Page";
 ?>
 <?php 
+date_default_timezone_set('Russia/Moscow');
+
 $email = $_POST["email"];
 $password = $_POST["password"];
 
-$error = "";
-
+if($error != "Данные успешно добавлены"){
+    $error = "";
+}
 require 'vendor/autoload.php';
 use Firebase\JWT\JWT;
 
@@ -43,10 +46,15 @@ if (isset($_POST["email"]) && isset($_POST["password"])) {
             $key,
             'HS256'
         );
-        setcookie("token", $token, time() +3600*24, "/", "", true, true);
-        echo "Успешная авторизация" . "<br>";
-        echo '<a href="profile/profile.php">Перейти в личный кабинет</a>';
-        die();
+        setcookie("token", $token, time() + 3600*24, "/", "", true, true);
+        // $error = "Успешная авторизация";
+        
+        $temp = date('m/d/Y h:i:s a', time());
+        $sql3 = "UPDATE users_ids
+        SET last_session = '$temp'
+        WHERE email = '$email';";
+        $result = $conn->query($sql);
+        header('location: profile/profile.php');
 
     } else {
         $error =  "Неверный email или пароль"; //  . "<br>" . '<a href="password_recovery.php">Забыли паароль?</a>'
@@ -79,8 +87,10 @@ if (isset($_POST["email"]) && isset($_POST["password"])) {
     			<div class="col-md-4">&nbsp;</div>
     			<div class="col-md-4">
     				<?php
-
-    				if($error !== '')
+                    if($error == "Данные успешно добавлены") {
+                        echo '<div class="alert alert-info">'.$error.'</div>';
+                    }else 
+                    if($error !== '')
     				{
     					echo '<div class="alert alert-danger">'.$error.'</div>';
     				}
@@ -117,3 +127,4 @@ if (isset($_POST["email"]) && isset($_POST["password"])) {
     	</div>
   	</body>
 </html>
+
