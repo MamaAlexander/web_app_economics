@@ -12,10 +12,9 @@ if ($conn->connect_error) {
     $error = "Ошибка: " . $conn->connect_error;
 }
 
-// $sql = 'SET @temp = $_COOKIE['token'] SET @email = "адрес@почта"
-//         UPDATE users_ids 
-//         SET is_verified = @temp 
-//         WHERE email = @email';
+// $sql = "UPDATE users_ids 
+//         SET is_verified = 'Verified'
+//         WHERE email = '. $decoded->data->email .'";
 // $result = $conn->query($sql);
 
 $key = '1a3LM3W966D6QTJ5BJb9opunkUcw_d09NCOIJb9QZTsrneqOICoMoeYUDcd_NfaQyR787PAH98Vhue5g938jdkiyIZyJICytKlbjNBtebaHljIR6-zf3A2h3uy6pCtUFl1UhXWnV6madujY4_3SyUViRwBUOP-UudUL4wnJnKYUGDKsiZePPzBGrF4_gxJMRwF9lIWyUCHSh-PRGfvT7s1mu4-5ByYlFvGDQraP4ZiG5bC1TAKO_CnPyd1hrpdzBzNW4SfjqGKmz7IvLAHmRD-2AMQHpTU-hN2vwoA-iQxwQhfnqjM0nnwtZ0urE6HjKl6GWQW-KLnhtfw5n_84IRQ';

@@ -89,11 +89,11 @@ $conn->close();
 			    				</div>
 			    				<div class="mb-3">
 			    					<label>Password</label>
-			    					<input type="text" name="password" class="form-control" required />
+			    					<input type="password" name="password" class="form-control" required />
 			    				</div>
 			    				<div class="mb-3">
 			    					<label>Password again</label>
-			    					<input type="text" name="password2" class="form-control" required />
+			    					<input type="password" name="password2" class="form-control" required />
 			    				</div>
 			    				<div class="text-center">
 			    					<input type="submit" name="login" class="btn btn-primary" value="Sign up" />
