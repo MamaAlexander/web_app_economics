@@ -1,5 +1,5 @@
 <?php
-include 'game_class.php';
+include("game_class.php");
 ?>
 
 <!DOCTYPE html>
@@ -19,7 +19,7 @@ include 'game_class.php';
     <div class="col-md-4">&nbsp;</div>
       <div class="col-md-4">
 
-      <form action = 'game_class.php' method = 'post'>
+      <form action = 'game_page.php' method = 'post'>
       <div class="mb-3">
         <label>Name your country:</label>
         <input type="text" name="name" class="form-control" />

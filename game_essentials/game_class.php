@@ -1,4 +1,5 @@
 <?php
+
 $error = '';
 // function sexit($a):
 //     if (a == 'exit'){

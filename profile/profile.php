@@ -49,6 +49,7 @@ if(isset($_COOKIE['token'])){
                         echo $decoded->data->name; 
                         ?>
                         </b></h1>
+						<a href="../game_essentials/game_page.php">Go to the game</a>
     				<a href="../logout.php">Exit</a>
     				
 		    	</div>
