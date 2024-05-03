@@ -11,6 +11,7 @@ if (isset($_POST["name"]) && isset($_POST["email"]) && isset($_POST["password"])
     $name = $conn->real_escape_string($_POST["name"]);
     $email = $conn->real_escape_string($_POST["email"]);
     $password = $conn->real_escape_string($_POST["password"]);
+    $key = md5(microtime(true));
 
     $sql2 = "SELECT * FROM users_ids WHERE email = '$email'";
     $result = $conn->query($sql2);
@@ -22,7 +23,7 @@ if (isset($_POST["name"]) && isset($_POST["email"]) && isset($_POST["password"])
     } else if ($_POST["password"] != $_POST["password2"]) {
         $error = "Пароли не совпадают";
     } else {
-        $sql = "INSERT INTO users_ids (name, email, password, last_session, is_verified) VALUES ('$name', '$email', '$password', '0', 'Not Verified')";
+        $sql = "INSERT INTO users_ids (user_id, name, email, password, last_session, is_verified) VALUES ('$key', '$name', '$email', '$password', '0', 'Not Verified')";
     
         if ($conn->query($sql)) {
             $error = "Данные успешно добавлены";
