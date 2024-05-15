@@ -1,17 +1,41 @@
 <?php
-    $title = "Main Page";
-?>
-<?php 
-date_default_timezone_set('Russia/Moscow');
+$title = "Main Page";
+error_reporting(E_ALL);
+ini_set('display_errors', 1);
 
-$email = $_POST["email"];
-$password = $_POST["password"];
-
-if($error != "Данные успешно добавлены"){
-    $error = "";
+function get_user_id($email) {
+    try {
+        $dbh = new PDO('mysql:dbname=web_app_econ;host=localhost', 'root', '');
+        $sth = $dbh->prepare("SELECT * FROM users_ids WHERE `email` = :email");
+        $sth->execute(array('email' => $email));
+        $array = $sth->fetch(PDO::FETCH_ASSOC);
+        return $array['user_id'];
+    } catch (PDOException $e) {
+        error_log("Ошибка подключения: " . $e->getMessage());
+        die($e->getMessage());
+        return null;
+    } finally {
+        $dbh = null;
+        $sth = null;
+    }
 }
-require 'vendor/autoload.php';
-use Firebase\JWT\JWT;
+$error = "";
+if (isset($_COOKIE['message'])) {
+	$error = $_COOKIE['message'];
+    // echo $_COOKIE['message'];
+    setcookie("message", "", time() - 3600, "/");;
+}
+
+
+date_default_timezone_set('Etc/GMT+3');
+
+// $email = $_POST["email"];
+// $password = $_POST["password"];
+
+// if($error != "Данные успешно добавлены"){
+//     $error = "";
+// }
+
 
 if (isset($_POST["email"]) && isset($_POST["password"])) {
     $connect = new PDO("mysql:host=localhost;dbname=web_app_econ", "root", "");
@@ -21,45 +45,60 @@ if (isset($_POST["email"]) && isset($_POST["password"])) {
     }
     $email = $conn->real_escape_string($_POST["email"]);
     $password = $conn->real_escape_string($_POST["password"]);
-    $sql = "SELECT *
-    FROM users_ids
-    WHERE email = '$email'
-      AND password = '$password';";
+    $sql = "SELECT * FROM users_ids WHERE email = '$email' AND password = '$password';";
     $result = $conn->query($sql);
 
     $query = "SELECT * FROM users_ids WHERE email = ?";
-		$statement = $connect->prepare($query);
-		$statement->execute([$_POST["email"]]);
-		$data = $statement->fetch(PDO::FETCH_ASSOC);
+    $statement = $connect->prepare($query);
+    $statement->execute([$_POST["email"]]);
+    $data = $statement->fetch(PDO::FETCH_ASSOC);
     
     if($result->num_rows >= 1 && $data['password'] == $_POST["password"]) {
-        $key = '1a3LM3W966D6QTJ5BJb9opunkUcw_d09NCOIJb9QZTsrneqOICoMoeYUDcd_NfaQyR787PAH98Vhue5g938jdkiyIZyJICytKlbjNBtebaHljIR6-zf3A2h3uy6pCtUFl1UhXWnV6madujY4_3SyUViRwBUOP-UudUL4wnJnKYUGDKsiZePPzBGrF4_gxJMRwF9lIWyUCHSh-PRGfvT7s1mu4-5ByYlFvGDQraP4ZiG5bC1TAKO_CnPyd1hrpdzBzNW4SfjqGKmz7IvLAHmRD-2AMQHpTU-hN2vwoA-iQxwQhfnqjM0nnwtZ0urE6HjKl6GWQW-KLnhtfw5n_84IRQ';
-        $token = JWT::encode(
-            array(
-                'iat'		=>	time(),
-                'nbf'		=>	time(),
-                'exp'		=>	time() + 3600*24,
-                'data'	=> array(
-                    'name'	=>	$data['name'],
-                    'email'	=>	$data['email']
-                )
-            ),
-            $key,
-            'HS256'
-        );
-        setcookie("token", $token, time() + 3600*24, "/", "", true, true);
-        // $error = "Успешная авторизация";
+        // $key = '1a3LM3W966D6QTJ5BJb9opunkUcw_d09NCOIJb9QZTsrneqOICoMoeYUDcd_NfaQyR787PAH98Vhue5g938jdkiyIZyJICytKlbjNBtebaHljIR6-zf3A2h3uy6pCtUFl1UhXWnV6madujY4_3SyUViRwBUOP-UudUL4wnJnKYUGDKsiZePPzBGrF4_gxJMRwF9lIWyUCHSh-PRGfvT7s1mu4-5ByYlFvGDQraP4ZiG5bC1TAKO_CnPyd1hrpdzBzNW4SfjqGKmz7IvLAHmRD-2AMQHpTU-hN2vwoA-iQxwQhfnqjM0nnwtZ0urE6HjKl6GWQW-KLnhtfw5n_84IRQ';
+        // $token = JWT::encode(
+        //     array(
+        //         'iat'		=>	time(),
+        //         'nbf'		=>	time(),
+        //         'exp'		=>	time() + 3600*24,
+        //         'data'	=> array(
+        //             'name'	=>	$data['name'],
+        //             'email'	=>	$data['email']
+        //         )
+        //     ),
+        //     $key,
+        //     'HS256'
+        // );
+        // setcookie("token", $token, time() + 3600*24, "/", "", true, true);
+        // // $error = "Успешная авторизация";
         
-        $temp = date('m/d/Y h:i:s a', time());
-        $sql3 = "UPDATE users_ids
-        SET last_session = '$temp'
-        WHERE email = '$email';";
-        $result = $conn->query($sql3);
-        header('location: profile/profile.php');
+        // $temp = date('m/d/Y h:i:s a', time());
+        // $sql3 = "UPDATE users_ids
+        // SET last_session = '$temp'
+        // WHERE email = '$email';";
+        // $result = $conn->query($sql3);
+      
 
+        // $user_id = get_user_id($_POST["email"]);
+        // $decoded = JWT::decode($_COOKIE['token'], new Key($key, 'HS256'));
+        // $dbh = new PDO('mysql:dbname=web_app_econ;host=localhost', 'root', '');
+        // $count_id = md5(microtime(true));
+        // $filename = __DIR__ . '/country_id.txt';
+        // file_put_contents($filename, $count_id);
+        // $sth = $dbh->prepare("INSERT INTO web_session (token, user_id) 
+        //                      VALUE (:token, :user_id);");
+        // $sth->execute(array('token' => $decoded, 'user_id' => $user_id));
+
+        $sql4 = "SELECT * from users_ids
+        where email = '$email'";
+        $result = $conn->query($sql4);
+        $row = $result->fetch_assoc(); // Получаем строку из результата
+        $user_id = $row['user_id']; 
+        $name = $row['name'];
+        setcookie("user_id", $user_id, time() + 3600, "/");
+        setcookie("name", $name, time() + 3600, "/");
+        header('location: profile/profile.php');
     } else {
         $error =  "Неверный email или пароль"; //  . "<br>" . '<a href="password_recovery.php">Забыли паароль?</a>'
-
     }
     $conn->close();
 }
@@ -89,13 +128,17 @@ if (isset($_POST["email"]) && isset($_POST["password"])) {
     			<div class="col-md-4">
     				<?php
                     if($error == "Данные успешно добавлены") {
-                        echo '<div class="alert alert-info">'.$error.'</div>';
+                        echo '<div class="alert alert-info">'.$error.'</div>' ;
                     }else 
                     if($error !== '')
     				{
     					echo '<div class="alert alert-danger">'.$error.'</div>';
     				}
-
+                    session_start();
+                    if (isset($_SESSION['message'])) {
+                        echo '<div class="alert alert-danger">' . $_SESSION['message'] . '</div>' ;
+                        unset($_SESSION['message']);                    
+                    }
     				?>
             <div class='d-flex justify-content-center'>
             <svg width="82" height="82" viewBox="0 0 82 82" fill="none" xmlns="http://www.w3.org/2000/svg">

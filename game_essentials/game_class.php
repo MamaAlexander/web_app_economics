@@ -1,14 +1,18 @@
 <?php
+
+require 'vendor/autoload.php';
+use Firebase\JWT\JWT;
+use Firebase\JWT\Key;
+
+
 function getCountryIdFromFile() {
   $filename = __DIR__ . '/country_id.txt';
   if (!file_exists($filename)) {
       echo "File not found: $filename";
       return false;
   }
-  
   $text = file_get_contents($filename);
-  $text = trim($text); // Trim whitespace
-  
+  $text = trim($text); 
   if ($text === '') {
       echo "File is empty";
       return false;
@@ -94,8 +98,8 @@ class Country {
     try {
       $dbh = new PDO('mysql:dbname=web_app_econ;host=localhost', 'root', '');
       $id = getCountryIdFromFile();
-      $sth = $dbh->prepare("UPDATE country_data SET error = :name WHERE `country_id` = :id");
-      $sth->execute(array('name' => $error, 'id' => $id));
+      $sth = $dbh->prepare("UPDATE country_data SET error = :error WHERE `country_id` = :id");
+      $sth->execute(array('error' => $error, 'id' => $id));
     } catch (PDOException $e) {
         $this->error = "Ошибка: " . $e->getMessage();
         return 1;
@@ -117,6 +121,62 @@ class Country {
         $dbh = null;
         $sth = null;
     }
+  }
+  function set_new_string($count_name) {
+    try {
+      $key = '1a3LM3W966D6QTJ5BJb9opunkUcw_d09NCOIJb9QZTsrneqOICoMoeYUDcd_NfaQyR787PAH98Vhue5g938jdkiyIZyJICytKlbjNBtebaHljIR6-zf3A2h3uy6pCtUFl1UhXWnV6madujY4_3SyUViRwBUOP-UudUL4wnJnKYUGDKsiZePPzBGrF4_gxJMRwF9lIWyUCHSh-PRGfvT7s1mu4-5ByYlFvGDQraP4ZiG5bC1TAKO_CnPyd1hrpdzBzNW4SfjqGKmz7IvLAHmRD-2AMQHpTU-hN2vwoA-iQxwQhfnqjM0nnwtZ0urE6HjKl6GWQW-KLnhtfw5n_84IRQ';
+      $decoded = JWT::decode($_COOKIE['token'], new Key($key, 'HS256'));
+      $dbh = new PDO('mysql:dbname=web_app_econ;host=localhost', 'root', '');
+      $count_id = md5(microtime(true));
+      $filename = __DIR__ . '/country_id.txt';
+      file_put_contents($filename, $count_id);
+      $sth = $dbh->prepare("INSERT INTO country_data (country_id, name) VALUE (:cid, :cname);");
+      $sth->execute(array('cid' => $count_id, 'cname' => $count_name));
+      echo 1;
+    } catch (PDOException $e) {
+        $this->error = "Ошибка: " . $e->getMessage();
+        return 1;
+    } finally {
+        $dbh = null;
+        $sth = null;
+    }
+  }
+  function set_country_data($field, $value) {
+  try {
+    $dbh = new PDO('mysql:dbname=web_app_econ;host=localhost', 'root', '');
+    $sql = "UPDATE country_data SET $field = :value WHERE country_id = :id";
+    $sth = $dbh->prepare($sql);
+    $id = getCountryIdFromFile();
+    $sth->execute(['value' => $value, 'id' => $id]);
+  } catch (PDOException $e) {
+    error_log("Ошибка подключения: " . $e->getMessage());
+    $this->set_message("Ошибка подключения: " . $e->getMessage());
+    die($e->getMessage());
+    return null;
+  } finally {
+    $dbh = null;
+    $sth = null;
+  }
+}function set_new_country($name) {
+  $id = getCountryIdFromFile();
+  $conn = new mysqli("localhost", "root", "", "web_app_econ");
+  if ($conn->connect_error) {
+      $this->error = "Ошибка: " . $conn->connect_error;
+  }
+  $sql2 = "SELECT * FROM country_data WHERE country_id = '$id'";
+  $result = $conn->query($sql2);
+  if ($result->num_rows == 0) {
+    $this->set_new_string($name);
+    $this->set_country_data('gdp', 1000);
+    $this->set_country_data('credits', 20);
+    $this->set_country_data('num_of_steps', 100);
+    $this->set_country_data('gov_budget', 'balanced');
+    $this->set_country_data('inf_rate', 5);
+    $this->set_country_data('unemploym_rate', 5);
+    $this->set_country_data('message', 'Your country is ' . $this->get_country_data('name') . ' with ' . $this->get_country_data('gdp') . 
+    ' GPD, ' . $this->get_country_data('inf_rate') . '% of inflation, ' . $this->get_country_data('unemploym_rate') . 
+    '% unemployment rate and ' . $this->get_country_data('gov_budget') . ' budget policy.');
+  }
 }
 function get_country_data() {
   try {
@@ -140,23 +200,9 @@ function get_country_data() {
     if ($this->credits >= $cr) {
       $this->credits -= $cr;
     } else {
-      $this->message = "You don't have anymore credits";
+      $this->set_message("You don't have anymore credits");
     }
   }
-  // function start_new_game($country_name) {
-  //   $conn = new mysqli("localhost", "root", "", "web_app_econ");
-  //   if ($conn->connect_error) {
-  //     $this->error = "Ошибка: " . $conn->connect_error;
-  //   }
-  //   $_message = 'Your country is ' . $this->get_name() . ' with ' . $this->get_gdp() . 
-  //                    ' GPD, ' . $this->get_inf_rate() . '% of inflation, ' . $this->get_unemploym_rate() . 
-  //                    '% unemployment rate and ' . $this->get_gov_budget() . ' budget policy.';
-  //   $id = getCountryIdFromFile();
-  //   $sql = "INSERT INTO country_data VALUES ('$id', '$country_name', 1000, 20, 'balanced', 5, 5, '$_message', '', 100);";
-  //   $result = $conn->query($sql);
-  //   if (!$result) {
-  //     $this->error = "Ошибка: " . $conn->error;
-  //   }
-  // }
 }
+
 ?>

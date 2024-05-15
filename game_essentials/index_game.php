@@ -1,11 +1,19 @@
 <?php
+
+session_start();
+if ($_COOKIE["user_id"] == '') {
+    $_SESSION['message'] = 'You need to authorise first';
+    header('Location: ../index.php');
+    exit();
+}
 error_reporting(E_ALL);
 ini_set('display_errors', 1);
 include_once('game_class.php');
+$user_id = $_COOKIE["user_id"];
 $message = '';
 $error = '';
 $your_country = new Country();
-
+$your_country->set_new_country($_POST['country_name']);
 
 $country = $your_country->get_country_data();
 ?>
@@ -20,8 +28,9 @@ $country = $your_country->get_country_data();
   <link rel="stylesheet" type="text/css" href="index.css">
 </head>
 <body>
+  <div style="align-items: right"><a href='../profile/profile.php'>Go to profile</a></div>
   <div class="container" style="margin-top: 15px"> 
-    <div class="card" style="background-color: darkseagreen;">  
+    <div class="card" style='background-color:cornflowerblue';">  
       <div class="row" style="align-items: center;">
         <div class="col">
           <?php

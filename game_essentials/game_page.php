@@ -1,7 +1,11 @@
 <?php
-include_once('game_class.php');
+session_start();
+if ($_COOKIE["user_id"] == '') {
+    $_SESSION['message'] = 'You need to authorise first';
+    header('Location: ../index.php');
+    exit();
+}
 ?>
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -11,14 +15,17 @@ include_once('game_class.php');
   <title>Country Simulator</title>
 </head>
 <body>
+<div style="align-items: right"><a href='../profile/profile.php'>Go to profile</a></div>
   <div class="container">
-  <div class="text-center mt-5 mb-5">
-    <form method="POST" action="index.php"> 
+    <div class="text-right mt-5 mb-5">
+      <form method="POST" action="index_game.php"> 
       <h1>Name your country:</h1>
-      <input type="text" name="country_name" class="form-control" />
-      <input type="submit" name="submit" class="btn btn-primary" value="Submit" />
+      <div style="text-align: centr">
+        <input type="text" name="country_name" class="form-control" style="margin-top: 20px; width: 300px"/>
+      </div>
+    <input type="submit" name="submit" class="btn btn-primary" value="Submit" style="margin-top: 20px"/>
     </form>
   </div>
-  </div>
+</div>
 </body>
 </html>

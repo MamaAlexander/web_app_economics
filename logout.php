@@ -1,6 +1,6 @@
 <?php
 
-setcookie("token", "", time() - 3600*24,  "/", "", true, true);
+setcookie("user_id", "", time() - 3600, "/");
 
 header('location:index.php');
 
