@@ -54,6 +54,7 @@ if (isset($_POST["email"]) && isset($_POST["password"])) {
     $data = $statement->fetch(PDO::FETCH_ASSOC);
     
     if($result->num_rows >= 1 && $data['password'] == $_POST["password"]) {
+        session_start();
         // $key = '1a3LM3W966D6QTJ5BJb9opunkUcw_d09NCOIJb9QZTsrneqOICoMoeYUDcd_NfaQyR787PAH98Vhue5g938jdkiyIZyJICytKlbjNBtebaHljIR6-zf3A2h3uy6pCtUFl1UhXWnV6madujY4_3SyUViRwBUOP-UudUL4wnJnKYUGDKsiZePPzBGrF4_gxJMRwF9lIWyUCHSh-PRGfvT7s1mu4-5ByYlFvGDQraP4ZiG5bC1TAKO_CnPyd1hrpdzBzNW4SfjqGKmz7IvLAHmRD-2AMQHpTU-hN2vwoA-iQxwQhfnqjM0nnwtZ0urE6HjKl6GWQW-KLnhtfw5n_84IRQ';
         // $token = JWT::encode(
         //     array(
@@ -94,8 +95,17 @@ if (isset($_POST["email"]) && isset($_POST["password"])) {
         $row = $result->fetch_assoc(); // Получаем строку из результата
         $user_id = $row['user_id']; 
         $name = $row['name'];
-        setcookie("user_id", $user_id, time() + 3600, "/");
-        setcookie("name", $name, time() + 3600, "/");
+        $_SESSION['user_id'] = $user_id; 
+        $_SESSION['name'] = $name; 
+        $_SESSION['session_id'] = md5(microtime(true));
+
+        $dbh = new PDO('mysql:dbname=web_app_econ;host=localhost', 'root', '');
+        $sql = "INSERT INTO web_session (cookie_id, user_id) VALUES (:session_id, :user_id)";
+        $sth = $dbh->prepare($sql);
+        $session_id = $_SESSION['session_id'];
+        $sth = $dbh->prepare($sql);
+        $sth->execute(array('session_id' => $session_id, 'user_id' => $user_id));
+
         header('location: profile/profile.php');
     } else {
         $error =  "Неверный email или пароль"; //  . "<br>" . '<a href="password_recovery.php">Забыли паароль?</a>'
@@ -119,6 +129,25 @@ if (isset($_POST["email"]) && isset($_POST["password"])) {
 
 
     <title>Document</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            background-image: url(v904-nunny-012.jpg);
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
+            height: 100vh; /* Задаем высоту равной высоте экрана */
+        }
+        #resized {
+            width: 300px;
+            /* text-align: center; */
+            margin-right: auto;
+	        margin-left: auto;
+            outline: 4px black solid;
+        }
+
+        </style>
 </head>
 <body>
     	<div class="container">
@@ -141,31 +170,28 @@ if (isset($_POST["email"]) && isset($_POST["password"])) {
                     }
     				?>
             <div class='d-flex justify-content-center'>
-            <svg width="82" height="82" viewBox="0 0 82 82" fill="none" xmlns="http://www.w3.org/2000/svg">
-              <path fill-rule="evenodd" clip-rule="evenodd" d="M70.6686 68.9797C77.6086 61.6541 81.8645 51.7657 81.8645 40.8843C81.8645 18.3045 63.5385 0 40.9323 0C18.326 0 0 18.3045 0 40.8843C0 51.4026 3.97667 60.9932 10.5102 68.2379C11.013 52.0809 24.2843 39.1371 40.5824 39.1371C57.1291 39.1371 70.5561 52.4788 70.6686 68.9797Z" fill="#BFBFBF"/>
-              <ellipse cx="40.5824" cy="20.9663" rx="13.2942" ry="13.2787" fill="white"/>
-              <path d="M81.3645 40.8843C81.3645 63.1874 63.2629 81.2686 40.9323 81.2686C18.6016 81.2686 0.5 63.1874 0.5 40.8843C0.5 18.5812 18.6016 0.5 40.9323 0.5C63.2629 0.5 81.3645 18.5812 81.3645 40.8843Z" stroke="white"/>
-              </svg>
+            <object type="image/svg+xml" data="icon.svg">
+            </object>
             </div>
             <div class='d-flex justify-content-center'><h2>Log in</h2></div>
-		    		<div class="card">
+		    		<!-- <div class="card"> -->
 		    			<div class="card-body">
 		    				<form method="post">
 		    					<div class="mb-3">
-			    					<label>Email</label>
-			    					<input type="email" name="email" class="form-control" />
+			    					<!-- <label style="margin-right: auto; margin-left: auto;">Email</label> -->
+                                    <input type="email" name="email" class="form-control" id='resized' placeholder="Email"/>
 			    				</div>
 			    				<div class="mb-3">
-			    					<label>Password</label>
-			    					<input type="password" name="password" class="form-control" />
+			    					<!-- <label style="margin-right: auto; margin-left: auto;">Password</label> -->
+			    					<input type="password" name="password" class="form-control" id='resized' placeholder="Password"/>
 			    				</div>
 			    				<div class="text-center">
-			    					<input type="submit" name="login" class="btn btn-primary" value="Log in" />
-                                    <a href="reg/registration.php"><input type="button" name="login" class="btn btn-primary" value="Sing up"></a>
+			    					<input type="submit" name="login" class="btn btn-dark" value="Log in" />
+                                    <a href="reg/registration.php"><input type="button" name="login" class="btn btn-light" value="Sing up"></a>
 			    				</div>
 		    				</form>
 		    			</div>
-		    		</div>
+		    		<!-- </div> -->
 		    	</div>
 	    	</div>
     	</div>

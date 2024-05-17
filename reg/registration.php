@@ -51,6 +51,24 @@ $conn->close();
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            background-image: url(../v904-nunny-012.jpg);
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
+            height: 100vh; /* Задаем высоту равной высоте экрана */
+        }
+        #resized {
+            width: 300px;
+            /* text-align: center; */
+            margin-right: auto;
+	        margin-left: auto;
+            outline: 4px black solid;
+        }
+        </style>
 </head>
 <body>
 <div class="container">
@@ -70,39 +88,32 @@ $conn->close();
     ?>
 
 <div class='d-flex justify-content-center'>
-            <svg width="82" height="82" viewBox="0 0 82 82" fill="none" xmlns="http://www.w3.org/2000/svg">
-              <path fill-rule="evenodd" clip-rule="evenodd" d="M70.6686 68.9797C77.6086 61.6541 81.8645 51.7657 81.8645 40.8843C81.8645 18.3045 63.5385 0 40.9323 0C18.326 0 0 18.3045 0 40.8843C0 51.4026 3.97667 60.9932 10.5102 68.2379C11.013 52.0809 24.2843 39.1371 40.5824 39.1371C57.1291 39.1371 70.5561 52.4788 70.6686 68.9797Z" fill="#BFBFBF"/>
-              <ellipse cx="40.5824" cy="20.9663" rx="13.2942" ry="13.2787" fill="white"/>
-              <path d="M81.3645 40.8843C81.3645 63.1874 63.2629 81.2686 40.9323 81.2686C18.6016 81.2686 0.5 63.1874 0.5 40.8843C0.5 18.5812 18.6016 0.5 40.9323 0.5C63.2629 0.5 81.3645 18.5812 81.3645 40.8843Z" stroke="white"/>
-              </svg>
+<object type="image/svg+xml" data="../icon.svg">
+            </object>
             </div>
             <div class='d-flex justify-content-center'><h2>Sign up</h2></div>
-		    		<div class="card">
+		    		<!-- <div class="card"> -->
 		    			<div class="card-body">
 		    				<form method="post">
                             <div class="mb-3">
-			    					<label>Name</label>
-			    					<input type="name" name="name" class="form-control" required />
+			    					<input type="name" name="name" class="form-control" id='resized' placeholder="Name" required />
 			    				</div>
 		    					<div class="mb-3">
-			    					<label>Email</label>
-			    					<input type="email" name="email" class="form-control" required />
+			    					<input type="email" name="email" class="form-control" id='resized' placeholder="Email" required />
 			    				</div>
 			    				<div class="mb-3">
-			    					<label>Password</label>
-			    					<input type="password" name="password" class="form-control" required />
+			    					<input type="password" name="password" class="form-control" id='resized' placeholder="Password" required />
 			    				</div>
 			    				<div class="mb-3">
-			    					<label>Password again</label>
-			    					<input type="password" name="password2" class="form-control" required />
+			    					<input type="password" name="password2" class="form-control" id='resized' placeholder="Password again" required />
 			    				</div>
 			    				<div class="text-center">
-			    					<input type="submit" name="login" class="btn btn-primary" value="Sign up" />
-                                    <a href="../index.php"><input type="button" name="login" class="btn btn-primary" value="Log in"></a>
+			    					<input type="submit" name="login" class="btn btn-dark" value="Sign up" />
+                                    <a href="../index.php"><input type="button" name="login" class="btn btn-light" value="Log in"></a>
 			    				</div>
 		    				</form>
 		    			</div>
-		    		</div>
+		    		<!-- </div> -->
 		    	</div>
 	    	</div>
     	</div>

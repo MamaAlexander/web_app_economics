@@ -4,23 +4,14 @@ ini_set('display_errors', 1);
 
 // welcome.php
 session_start();
-if ($_COOKIE["user_id"] == '') {
+if ($_SESSION['user_id'] == '') {
     $_SESSION['message'] = 'You need to authorise first';
     header('Location: ../index.php');
     exit();
 }
 
-$user_id = $_COOKIE["user_id"];
-// $conn = new mysqli("localhost", "root", "", "web_app_econ");
-// if ($conn->connect_error) {
-//     $error = "Ошибка: " . $conn->connect_error;
-// }
 
-$dbh = new PDO('mysql:dbname=web_app_econ;host=localhost', 'root', '');
-$sth = $dbh->prepare("SELECT * FROM users_ids WHERE user_id = :id");
-$sth->execute(['id' => $user_id]);
-$array = $sth->fetch(PDO::FETCH_ASSOC);
-$name = $array['name'];
+$name = $_SESSION["name"];
 // $sql = "UPDATE users_ids 
 //         SET is_verified = 'Verified'
 //         WHERE email = '. $decoded->data->email .'";
@@ -33,7 +24,8 @@ $name = $array['name'];
 // } else {
 // 	header('location:index.php');
 // }
-echo $_COOKIE["user_id"];
+
+// echo $_COOKIE["user_id"];
 
 ?>
 
@@ -44,6 +36,17 @@ echo $_COOKIE["user_id"];
     	<meta name="viewport" content="width=device-width, initial-scale=1">
     	<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
     	<title>Profile</title>
+		<style>
+        body {
+            margin: 0;
+            padding: 0;
+            background-image: url(../v904-nunny-012.jpg);
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
+            height: 100vh; /* Задаем высоту равной высоте экрана */
+        }
+    </style>
   	</head>
   	<body>
     	<div class="container">
