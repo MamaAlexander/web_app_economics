@@ -38,13 +38,6 @@ $conn->close();
 ?>
 
 
-
-
-
-
-
-
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -62,6 +55,7 @@ $conn->close();
             height: 100vh; /* Задаем высоту равной высоте экрана */
         }
         #resized {
+            border-radius: 10px;
             width: 300px;
             /* text-align: center; */
             margin-right: auto;

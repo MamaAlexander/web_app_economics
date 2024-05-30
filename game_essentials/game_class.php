@@ -1,6 +1,7 @@
 <?php
 session_start();
 
+
 class Country {
   // Properties
   public $name;
@@ -132,12 +133,11 @@ function set_new_country($name) {
   $this->set_country_data('error', '');
   }
 }
-function get_country_data() {
+function get_country_data($count_id) {
     try {
       $dbh = new PDO('mysql:dbname=web_app_econ;host=localhost', 'root', '');
       $sth = $dbh->prepare("SELECT * FROM country_data WHERE `country_id` = :id");
-      $id = $_SESSION['count_id'];
-      $sth->execute(array('id' => $id));
+      $sth->execute(array('id' => $count_id));
       $array = $sth->fetch(PDO::FETCH_ASSOC);
       return $array;
     } catch (PDOException $e) {

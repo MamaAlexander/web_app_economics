@@ -46,6 +46,7 @@ $name = $_SESSION["name"];
             background-attachment: fixed;
             height: 100vh; /* Задаем высоту равной высоте экрана */
         }
+		
     </style>
   	</head>
   	<body>
@@ -60,8 +61,8 @@ $name = $_SESSION["name"];
 						?>
 					</b></h1>
 					<div style="margin-top: 40px">
-					<a href="../game_essentials/game_page.php"><input type="button" name="button" class="btn btn-primary" value="Go to the game"></a>
-					<a href="../logout.php"><input type="button" name="button" class="btn btn-primary" value="Exit"></a>
+					<a href="../game_essentials/enter_the_game.php"><input type="button" name="button" class="btn btn-dark" value="Go to the game"></a>
+					<a href="../logout.php"><input type="button" name="button" class="btn btn-light" value="Exit"></a>
 					</div>
 				</div>
 	    	</div>
