@@ -124,13 +124,14 @@ if ($array2['country2_id'] != 0 and $array2['country1_id'] != 0) {
       font-weight: 400;
       text-align: center;
       vertical-align: middle;
+      float: right;
       user-select: none;
       background-color: transparent;
       border: 1px solid transparent;
       padding: 0.375rem 0.75rem;
       font-size: 1rem;
       line-height: 1.5;
-      border-radius: 10px;
+      border-radius: 20px;
       transition: color 0.15s ease-in-out, background-color 0.15s ease-in-out, border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
       color: #212529;
       background-color: #f8f9fa;
@@ -225,6 +226,7 @@ if (isset($opponent_country)) {
         $error = '';
     }
   ?>
+
 </div>
 
 <!-- Message reciever -->
@@ -242,13 +244,23 @@ $message = $country['message'];
 ?>
 </div>
 
+<!-- <div style="margin-right: 20px; margin-top: 10px;">
+    <p style="text-align:right;">
+        Credits last <br>
+        <b id="credits"></b>
+    </p>
+</div> -->
+
 <div style="margin-right: 20px; margin-top: 10px;">
-<p style="text-align:right;">
-  <?php
-  echo "Credits last" . "<br> <b>" . $country['credits'] . '</b>';
-  ?>
-  </p>
+    <p style="text-align:right;">
+        Credits last <br>
+        <b id="credits"></b>
+    </p>
 </div>
+<p id="errorMessage" style="color: red; text-align: right;"></p>
+
+
+
 
 <div style="margin-right: 20px; margin-top: 10px;">
 <p style="text-align:right;">
@@ -259,106 +271,135 @@ $message = $country['message'];
 </div>
 
 
-
-
-
 <div class="container" style="display: flex; padding-bottom: 40px">
-  <div class="actions-container" style="flex: 1; margin-right: 20px;">
-    <h3>Actions:</h3>
-    <div class="row">
-      <div class="col" style="margin-left: 20px">
-        <details>
-          <summary class="no-marker" style="margin-top: 20px; width: fit-content;"><h4>Finance market</h4></summary>
-          <div class="input-group">
-            <label for="financeInput">Change percent rate</label>
-            <input type="number" id="financeInput" name="financeInput" class="form-control" style="border-radius: 15px;"/>
-            <!-- <input type="number" id="Change percent rate" name="financeInput" class="form-control" style="border-radius: 15px;"/> -->
-            <button class="submitButton">Submit</button>
-          </div>
-          <div class="input-group">
-            <label for="reservationInput">Change reservation rate</label>
-            <input type="number" id="reservationInput" name="reservationInput" class="form-control" style="border-radius: 15px;"/>
-            <button class="submitButton">Submit</button>
-          </div>
-          <div class="input-group">
-            <label for="bondsInput">Issue of government bonds</label>
-            <input type="number" id="bondsInput" name="bondsInput" class="form-control" style="border-radius: 15px;"/>
-            <button class="submitButton">Submit</button>
-          </div>
-        </details>
-        <details>
-          <summary class="no-marker" style="margin-top: 10px; width: fit-content;"><h4>Households</h4></summary>
-          <div class="input-group">
-            <label for="transfersInput">Transfers</label>
-            <input type="number" id="transfersInput" name="transfersInput" class="form-control" style="border-radius: 15px;"/>
-            <button class="submitButton">Submit</button>
-          </div>
-          <div class="input-group">
-            <label for="taxesInput">Taxes</label>
-            <input type="number" id="taxesInput" name="taxesInput" class="form-control" style="border-radius: 15px;"/>
-            <button class="submitButton">Submit</button>
-          </div>
-        </details>
-        <details>
-          <summary class="no-marker" style="margin-top: 10px; width: fit-content;"><h4>Firms</h4></summary>
-          <div class="input-group">
-            <label for="firmTransfersInput">Transfers</label>
-            <input type="number" id="firmTransfersInput" name="firmTransfersInput" class="form-control" style="border-radius: 15px;"/>
-            <button class="submitButton">Submit</button>
-          </div>
-          <div class="input-group">
-            <label for="firmTaxesInput">Taxes</label>
-            <input type="number" id="firmTaxesInput" name="firmTaxesInput" class="form-control" style="border-radius: 15px;"/>
-            <button class="submitButton">Submit</button>
-          </div>
-        </details>
-      </div>
+    <div class="actions-container" style="flex: 1; margin-right: 20px;">
+        <h3>Actions:</h3>
+        <div class="row">
+            <div class="col" style="margin-left: 20px">
+                <details>
+                    <summary class="no-marker" style="margin-top: 20px; width: fit-content;"><h4>Finance market</h4></summary>
+                    <div class="input-group">
+                        <label for="financeInput">Change percent rate</label>
+                        <input type="number" id="change_percent_rate" name="Change percent rate in finance market" class="form-control" style="border-radius: 15px;"/>
+                        <button class="submitButton" id="4">Submit</button>
+                    </div>
+                    <div class="input-group">
+                        <label for="reservationInput">Change reservation rate</label>
+                        <input type="number" id="change_reservation_rate" name="Change reservation rate in finance market" class="form-control" style="border-radius: 15px;"/>
+                        <button class="submitButton" id="5">Submit</button>
+                    </div>
+                    <div class="input-group">
+                        <label for="bond-select">Issue of government bonds</label>
+                        <select name="Issue of government bonds in finance market" id="bond-select" class="form-control" style="">
+                            <option value="0" id="0">-- Choose bonds type --</option>
+                            <option value="Fixed coupon bonds" id="fixed_bonds">Fixed coupon bonds</option>
+                            <option value="Variable coupon bonds" id="variable_bonds">Variable coupon bonds</option>
+                            <option value="Bonds with indexed par value" id="indexed_bonds">Bonds with indexed par value</option>
+                            <option value="Bonds with debt amortization" id="amortisation_bonds">Bonds with debt amortization</option>
+                        </select>
+                        <button class="submitButton" id="5">Submit</button>
+                    </div>
+                </details>
+                <details>
+                    <summary class="no-marker" style="margin-top: 10px; width: fit-content;"><h4>Households</h4></summary>
+                    <div class="input-group">
+                        <label for="transfersInput">Transfers</label>
+                        <input type="number" id="households_transfers" name="Households transfers" class="form-control" style="border-radius: 15px;"/>
+                        <button class="submitButton" id="3">Submit</button>
+                    </div>
+                    <div class="input-group">
+                        <label for="taxesInput">Taxes</label>
+                        <input type="number" id="households_taxes" name="Households taxes" class="form-control" style="border-radius: 15px;"/>
+                        <button class="submitButton" id="5">Submit</button>
+                    </div>
+                </details>
+                <details>
+                    <summary class="no-marker" style="margin-top: 10px; width: fit-content;"><h4>Firms</h4></summary>
+                    <div class="input-group">
+                        <label for="firmTransfersInput">Transfers</label>
+                        <input type="number" id="firm_transfers" name="Firm transfers" class="form-control" style="border-radius: 15px;"/>
+                        <button class="submitButton" id="4">Submit</button>
+                    </div>
+                    <div class="input-group">
+                        <label for="firmTaxesInput">Taxes</label>
+                        <input type="number" id="firm_taxes" name="Firm taxes" class="form-control" style="border-radius: 15px;"/>
+                        <button class="submitButton" id="6">Submit</button>
+                    </div>
+                </details>
+            </div>
+        </div>
     </div>
-  </div>
-  <div class="summary-container" style="flex: 1; border: 4px solid black; border-radius: 10px; background-color: white;">
-    <!-- <div class="card" id="summaryContainer" style="background-color: white; padding: 20px; border-radius: 10px; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);"> -->
-      <h2 style="display: flex; justify-content: center;">Changes</h2>
-      <div id="summaryList"></div>
+    <div class="summary-container" style="flex: 1; border: 4px solid black; border-radius: 10px; background-color: white;">
+        <h2 style="display: flex; justify-content: center;">Changes</h2>
+        <div id="summaryList"></div>
     </div>
-  </div>
 </div>
 
 <script>
-  document.querySelectorAll('.submitButton').forEach(button => {
-    button.addEventListener('click', function() {
-      const input = this.previousElementSibling;
-      const userInput = input.value;
-      if (userInput.trim() !== "" || userInput.trim() !== 0) {
-        addSummaryItem(userInput);
-        input.value = '';
-      }
-    });
-  });
+    var credits = 20;
+    document.getElementById('credits').textContent = credits;
+    var commands = {};
+    document.querySelectorAll('.submitButton').forEach(button => {
+        button.addEventListener('click', function() {
+            const input = this.previousElementSibling;
+            const num = Number(this.id);
+            if (credits >= num) {
+                let userInput = input.value;
+                const input_name = input.name;
+                const input_id = input.id;
+                
+                
+                if (input.tagName.toLowerCase() === 'select') {
+                    userInput = input.options[input.selectedIndex].text;
+                    commands[input.id] = input.value;
+                    
+                } else {
+                    commands[input.id] = Number(input.value);
+                }
+                console.log(commands);
+                if (userInput.trim() !== "" && userInput !== "-- Choose bonds type --") {
+                    addSummaryItem(userInput, input_name, num, input_id);
+                    credits -= num;
+                    document.getElementById('credits').textContent = credits;
 
-  function addSummaryItem(text) {
-    const summaryList = document.getElementById();
-    const summaryItem = document.createElement('div');
-    const id = summaryItem.getAttribute("id");
-    summaryItem.className = 'summary-item';
-    summaryItem.style.backgroundColor = 'white';
-    summaryItem.style.padding = '5px';
-    summaryItem.style.borderRadius = '10px';
-    summaryItem.style.boxShadow = '0 4px 8px rgba(0, 0, 0, 0.1)';
-    
-    const itemText = document.createElement('span');
-    itemText.textContent = id + ': ' + text;
-    summaryItem.appendChild(itemText);
-    
-    const removeButton = document.createElement('button');
-    removeButton.innerHTML = '&times;';
-    removeButton.className = 'remove-button';
-    removeButton.addEventListener('click', function() {
-      summaryList.removeChild(summaryItem);
+                    if (input.tagName.toLowerCase() === 'input') {
+                        input.value = '';
+                    } else if (input.tagName.toLowerCase() === 'select') {
+                        input.selectedIndex = 0;
+                    }
+                }
+                document.getElementById('errorMessage').textContent = ''; // Очистить сообщение об ошибке
+            } else {
+                document.getElementById('errorMessage').textContent = "All credits wasted";
+            }
+        });
     });
-    summaryItem.appendChild(removeButton);
-    
-    summaryList.appendChild(summaryItem);
-  }
+
+    function addSummaryItem(text, input_name, num, input_id) {
+        const summaryList = document.getElementById('summaryList');
+        const summaryItem = document.createElement('div');
+        summaryItem.className = 'summary-item';
+        summaryItem.name = num;
+        summaryItem.id = input_id;
+
+        const itemText = document.createElement('span');
+        itemText.textContent = input_name + ': ' + text;
+        summaryItem.appendChild(itemText);
+
+        const removeButton = document.createElement('button');
+        removeButton.innerHTML = '&times;';
+        removeButton.className = 'remove-button';
+        removeButton.addEventListener('click', function() {
+            delete commands[summaryItem.id]; // Удаление из словаря commands
+            credits += Number(summaryItem.name);
+            document.getElementById('credits').textContent = credits;
+            summaryList.removeChild(summaryItem);
+            console.log(commands);
+        });
+        summaryItem.appendChild(removeButton);
+
+        summaryList.appendChild(summaryItem);
+    }
 </script>
 
 <style>
@@ -370,12 +411,12 @@ $message = $country['message'];
   }
 
   .input-group label {
-    margin-right: auto; /* Push label to the left */
+    margin-right: auto; 
   }
 
   .input-group input {
-    max-width: 150px; /* Maximum width for input */
-    margin-right: 10px; /* Space between input and button */
+    max-width: 150px;
+    margin-right: 10px;
   }
 
   details summary.no-marker {

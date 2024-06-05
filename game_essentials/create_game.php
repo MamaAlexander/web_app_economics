@@ -2,11 +2,13 @@
 session_start();
 error_reporting(E_ALL);
 ini_set('display_errors', 1);
+
 if ($_SESSION['user_id'] == '') {
     $_SESSION['message'] = 'You need to authorise first';
     header('Location: ../index.php');
     exit();
 }
+
 $count_name = $_POST['country_name'];
 $_SESSION['count_name'] = $count_name;
 $user_id = $_SESSION["user_id"];

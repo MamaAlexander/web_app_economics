@@ -54,6 +54,7 @@ class Country {
         $sth = null;
     }
   }
+
   function set_message($message) {
     try {
       $dbh = new PDO('mysql:dbname=web_app_econ;host=localhost', 'root', '');
@@ -150,6 +151,7 @@ function get_country_data($count_id) {
       $sth = null;
     }
   }
+  
 }
 
 ?>
