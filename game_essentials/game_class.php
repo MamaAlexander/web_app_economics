@@ -6,7 +6,6 @@ class Country {
   // Properties
   public $name;
   public $gdp;
-  public $credits;
   public $gov_budget;
   public $actions;
   public $actions_finance_market;
@@ -14,60 +13,40 @@ class Country {
   public $actions_firms;
   public $inf_rate;
   public $unemploym_rate;
-  public $message;
-  public $error;
   public $num_of_steps;
+  public $error;
+
+  public $percent_rate;
+  public $reservation_rate;
+  public $hh_transferts;
+  public $hh_taxes;
+  public $f_transferts;
+  public $f_taxes;
+  public $fixed_bonds;
+  public $variable_bonds;
+  public $indexed_bonds;
+  public $amortisation_bonds;
   public function __construct() {
-    $this->message = '';
-    $this->error = '';
-    $this->num_of_steps = 100;
-    $this->gdp = 1000;
-    $this->gov_budget = 'balanced';
-    $this->credits = 20;
-    $this->inf_rate = 5;
-    $this->unemploym_rate = 5;
-    $this->actions = ['Finance market', ['Rate percent', 'Reservation rate', 'Issue of government bonds'],
-                      'Households', ['Transferts', 'Taxes'],
-                      'Firms', ['Transferts', 'Taxes'],
-                      'Another world', ['Embargo', 'Duties']];
-    $this->actions_finance_market = [ 'Rate percent', ['Increase', 'Decrease'],
-                                      'Reservation rate', ['Increase', 'Decrease'],
-                                      'Issue of government bonds', ['Release more long-term bonds', 'Release more short-term bonds']];
-    $this->actions_households = [ 'Transferts', ['Increase', 'Decrease'],
-                                  'Taxes', ['Increase', 'Decrease']];
-    $this->actions_firms = [ 'Transferts', ['Increase', 'Decrease'],
-                                  'Taxes', ['Increase', 'Decrease']];
-
+    
   }
-
-  function set_error($error) {
-    try {
-      $dbh = new PDO('mysql:dbname=web_app_econ;host=localhost', 'root', '');
-      $id = $_SESSION['count_id'];
-      $sth = $dbh->prepare("UPDATE country_data SET error = :error WHERE `country_id` = :id");
-      $sth->execute(array('error' => $error, 'id' => $id));
-    } catch (PDOException $e) {
-        $this->error = "Ошибка: " . $e->getMessage();
-        return 1;
-    } finally {
-        $dbh = null;
-        $sth = null;
-    }
-  }
-
-  function set_message($message) {
-    try {
-      $dbh = new PDO('mysql:dbname=web_app_econ;host=localhost', 'root', '');
-      $id = $_SESSION['count_id'];
-      $sth = $dbh->prepare("UPDATE country_data SET message = :message WHERE `country_id` = :id");
-      $sth->execute(array('message' => $message, 'id' => $id));
-    } catch (PDOException $e) {
-        $this->error = "Ошибка: " . $e->getMessage();
-        return 1;
-    } finally {
-        $dbh = null;
-        $sth = null;
-    }
+  function set_fields($count_id) {
+    $array = $this->get_country_data($count_id);
+    $this->name = $array["name"];
+    $this->gdp = $array["gdp"];
+    $this->gov_budget = $array["gov_budget"];
+    $this->inf_rate = $array["inf_rate"];
+    $this->unemploym_rate = $array["inf_rate"];
+    $this->num_of_steps = $array["num_of_steps"];
+    $this->percent_rate = $array["percent_rate"];
+    $this->reservation_rate = $array["reservation_rate"];
+    $this->hh_transferts = $array["hh_transferts"];
+    $this->hh_taxes = $array["hh_taxes"];
+    $this->f_transferts = $array["f_transferts"];
+    $this->f_taxes = $array["f_taxes"];
+    $this->fixed_bonds = $array["fixed_bonds"];
+    $this->variable_bonds = $array["variable_bonds"];
+    $this->indexed_bonds = $array["indexed_bonds"];
+    $this->amortisation_bonds = $array["amortisation_bonds"];
   }
   function set_new_string($count_name) {
     try {
@@ -100,7 +79,6 @@ class Country {
     $sth->execute(['value' => $value, 'id' => $id]);
   } catch (PDOException $e) {
     error_log("Ошибка подключения: " . $e->getMessage());
-    $this->set_message("Ошибка подключения: " . $e->getMessage());
     die($e->getMessage());
     return null;
   } finally {
@@ -124,14 +102,23 @@ function set_new_country($name) {
   if (!$flag) {
   $message = 'Your country is ' . '<b>' . $name . '</b>' . ' with indicators located above';
   $this->set_new_string($name);
-  $this->set_country_data('gdp', 1000);
+  $this->set_country_data('gdp', 20000);
   $this->set_country_data('credits', 20);
   $this->set_country_data('num_of_steps', 100);
   $this->set_country_data('gov_budget', 'balanced');
-  $this->set_country_data('inf_rate', 5);
+  $this->set_country_data('inf_rate', 2);
   $this->set_country_data('unemploym_rate', 5);
   $this->set_country_data('message', $message);
-  $this->set_country_data('error', '');
+  $this->set_country_data('percent_rate', 3);
+  $this->set_country_data('reservation_rate', 10);
+  $this->set_country_data('hh_transferts', 1000);
+  $this->set_country_data('hh_taxes', 15);
+  $this->set_country_data('f_transferts', 5000);
+  $this->set_country_data('f_taxes', 20);
+  $this->set_country_data('fixed_bonds', 1);
+  $this->set_country_data('variable_bonds', 0);
+  $this->set_country_data('indexed_bonds', 0);
+  $this->set_country_data('amortisation_bonds', 1);
   }
 }
 function get_country_data($count_id) {
@@ -143,7 +130,6 @@ function get_country_data($count_id) {
       return $array;
     } catch (PDOException $e) {
       error_log("Ошибка подключения: " . $e->getMessage());
-      $this->set_message("Ошибка подключения: " . $e->getMessage());
       die($e->getMessage());
       return null;
     } finally {
@@ -151,6 +137,10 @@ function get_country_data($count_id) {
       $sth = null;
     }
   }
+
+  // function modify_country_data() {
+    
+  // }
   
 }
 

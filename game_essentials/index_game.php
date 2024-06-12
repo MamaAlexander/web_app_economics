@@ -51,8 +51,10 @@ if ($array2['country1_id'] == 0 and $array2['country2_id'] == 0) {
 // Determine the opponent country ID
 if ($country['country_id'] == $array2['country1_id']) {
   $opponent_country_id = $array2['country2_id'];
+  $country_id = $array2['country1_id'];
 } else {
   $opponent_country_id = $array2['country1_id'];
+  $country_id = $array2['country2_id'];
 }
 if ($array2['country2_id'] != 0 and $array2['country1_id'] != 0) {
   $dbh = new PDO('mysql:dbname=web_app_econ;host=localhost', 'root', '');
@@ -61,7 +63,7 @@ if ($array2['country2_id'] != 0 and $array2['country1_id'] != 0) {
   $array6 = $sth->fetch(PDO::FETCH_ASSOC);
   $opponent_country = $array6;
 }
-
+$your_country->set_fields($country_id);
 ?>
 
 <!DOCTYPE html>
@@ -120,22 +122,33 @@ if ($array2['country2_id'] != 0 and $array2['country1_id'] != 0) {
       padding: 3px 6px;
   }
   .submitButton {
-      display: inline-block;
-      font-weight: 400;
-      text-align: center;
-      vertical-align: middle;
-      float: right;
-      user-select: none;
-      background-color: transparent;
-      border: 1px solid transparent;
-      padding: 0.375rem 0.75rem;
-      font-size: 1rem;
-      line-height: 1.5;
-      border-radius: 20px;
-      transition: color 0.15s ease-in-out, background-color 0.15s ease-in-out, border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
-      color: #212529;
-      background-color: #f8f9fa;
-      border-color: #f8f9fa;
+    display: inline-block;
+    font-weight: 400;
+    text-align: center;
+    vertical-align: middle;
+    float: right;
+    user-select: none;
+    background-color: transparent;
+    border: 1px solid transparent;
+    padding: 0.375rem 0.75rem;
+    font-size: 1rem;
+    line-height: 1.5;
+    border-radius: 10px;
+    transition: color 0.15s ease-in-out, background-color 0.15s ease-in-out, border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+    color: #212529;
+    background-color: #f8f9fa;
+    border-color: #f8f9fa;
+    margin-left: auto;
+    margin-right: 0;
+}
+.parentContainer {
+    overflow: hidden; /* или auto, в зависимости от случая */
+    display: flex; /* Добавлено */
+    justify-content: flex-end; /* Добавлено */
+    padding-right: 1rem; /* Добавлено, если нужно больше пространства */
+}
+  .pre-tab {
+    white-space: pre; /* Сохраняем изначальное форматирование */
   }
 </style>
 <body>
@@ -153,7 +166,7 @@ if ($array2['country2_id'] != 0 and $array2['country1_id'] != 0) {
       </div>
       <div class="col" style="margin-top: 20px; margin-bottom: 20px; margin-left: 8px; margin-right: 8px;">
         <?php
-        echo '<b>' . "GDP" . '</b>' ."<br>" . $country['gdp'];
+        echo '<b>' . "GDP by PPP" . '</b>' ."<br>" . $country['gdp'];
         ?>
       </div>
       <div class="col" style="margin-top: 20px; margin-bottom: 20px; margin-left: 8px; margin-right: 8px;">
@@ -186,7 +199,7 @@ if (isset($opponent_country)) {
         echo "<b>" . $opponent_country["name"] . "</b>" . '
       </div>
       <div class="col" style="margin-top: 20px; margin-bottom: 20px; margin-left: 8px; margin-right: 8px;">';
-        echo "<b>" . "GDP" . "</b>" ."<br>" . $opponent_country["gdp"] . '
+        echo "<b>" . "GDP by PPP" . "</b>" ."<br>" . $opponent_country["gdp"] . '
       </div>
       <div class="col" style="margin-top: 20px; margin-bottom: 20px; margin-left: 8px; margin-right: 8px;">';
         echo "<b>" . "State budget status" . "</b>" . "<br>" . $opponent_country["gov_budget"] . '
@@ -277,21 +290,21 @@ $message = $country['message'];
         <div class="row">
             <div class="col" style="margin-left: 20px">
                 <details>
-                    <summary class="no-marker" style="margin-top: 20px; width: fit-content;"><h4>Finance market</h4></summary>
+                    <summary class="no-marker" style="margin-top: 20px; width: fit-content;"><h4> Finance market</h4></summary>
                     <div class="input-group">
-                        <label for="financeInput">Change percent rate</label>
-                        <input type="number" id="change_percent_rate" name="Change percent rate in finance market" class="form-control" style="border-radius: 15px;"/>
+                        <label for="financeInput"> &emsp; Change <br>  &emsp; percent rate</label>
+                        <input type="number" id="percent_rate" name="Change percent rate in finance market" class="form-control" style="border-radius: 15px; margin-right: 20px;"/>
                         <button class="submitButton" id="4">Submit</button>
                     </div>
                     <div class="input-group">
-                        <label for="reservationInput">Change reservation rate</label>
-                        <input type="number" id="change_reservation_rate" name="Change reservation rate in finance market" class="form-control" style="border-radius: 15px;"/>
+                        <label for="reservationInput">&emsp; Change <br> &emsp; reservation rate</label>
+                        <input type="number" id="reservation_rate" name="Change reservation rate in finance market" class="form-control" style="border-radius: 15px; margin-right: 20px;"/>
                         <button class="submitButton" id="5">Submit</button>
                     </div>
                     <div class="input-group">
-                        <label for="bond-select">Issue of government bonds</label>
-                        <select name="Issue of government bonds in finance market" id="bond-select" class="form-control" style="">
-                            <option value="0" id="0">-- Choose bonds type --</option>
+                        <label for="bond-select">&emsp; Issue of <br> &emsp; government bonds</label>
+                        <select name="Issue of government bonds in finance market" id="bond-select" class="form-control" style="flex: 0.5; margin-right: 20px; border-radius: 15px;">
+                            <option value="0" id="0">--Choose bonds type--</option>
                             <option value="Fixed coupon bonds" id="fixed_bonds">Fixed coupon bonds</option>
                             <option value="Variable coupon bonds" id="variable_bonds">Variable coupon bonds</option>
                             <option value="Bonds with indexed par value" id="indexed_bonds">Bonds with indexed par value</option>
@@ -303,40 +316,139 @@ $message = $country['message'];
                 <details>
                     <summary class="no-marker" style="margin-top: 10px; width: fit-content;"><h4>Households</h4></summary>
                     <div class="input-group">
-                        <label for="transfersInput">Transfers</label>
-                        <input type="number" id="households_transfers" name="Households transfers" class="form-control" style="border-radius: 15px;"/>
+                        <label for="transfersInput">&emsp; Transfers</label>
+                        <input type="number" id="hh_transferts" name="Households transfers" class="form-control" style="border-radius: 15px; margin-right: 20px;"/>
                         <button class="submitButton" id="3">Submit</button>
                     </div>
                     <div class="input-group">
-                        <label for="taxesInput">Taxes</label>
-                        <input type="number" id="households_taxes" name="Households taxes" class="form-control" style="border-radius: 15px;"/>
+                        <label for="taxesInput">&emsp; Taxes</label>
+                        <input type="number" id="hh_taxes" name="Households taxes" class="form-control" style="border-radius: 15px; margin-right: 20px;"/>
                         <button class="submitButton" id="5">Submit</button>
                     </div>
                 </details>
                 <details>
                     <summary class="no-marker" style="margin-top: 10px; width: fit-content;"><h4>Firms</h4></summary>
                     <div class="input-group">
-                        <label for="firmTransfersInput">Transfers</label>
-                        <input type="number" id="firm_transfers" name="Firm transfers" class="form-control" style="border-radius: 15px;"/>
+                        <label for="firmTransfersInput">&emsp; Transfers</label>
+                        <input type="number" id="f_transferts" name="Firm transfers" class="form-control" style="border-radius: 15px; margin-right: 20px;"/>
                         <button class="submitButton" id="4">Submit</button>
                     </div>
                     <div class="input-group">
-                        <label for="firmTaxesInput">Taxes</label>
-                        <input type="number" id="firm_taxes" name="Firm taxes" class="form-control" style="border-radius: 15px;"/>
+                        <label for="firmTaxesInput">&emsp; Taxes</label>
+                        <input type="number" id="f_taxes" name="Firm taxes" class="form-control" style="border-radius: 15px; margin-right: 20px;"/>
                         <button class="submitButton" id="6">Submit</button>
                     </div>
                 </details>
             </div>
         </div>
     </div>
-    <div class="summary-container" style="flex: 1; border: 4px solid black; border-radius: 10px; background-color: white;">
+    <div class="summary-container" style="flex: 0.55; border: 4px solid black; border-radius: 10px; background-color: white;">
+        <h2 style="display: flex; justify-content: center;">Indicators</h2>
+          <div class="row">
+            <div class="col">
+              Percent rate:
+            </div>
+            <div class="col">
+              <?php echo $your_country->percent_rate . '%'?>
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="col">
+              Reservation rate:
+            </div>
+            <div class="col">
+              <?php echo $your_country->reservation_rate . '%'?>
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="col">
+              Transferts for households:
+            </div>
+            <div class="col">
+              <?php echo $your_country->hh_transferts?>
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="col">
+              Taxes for households:
+            </div>
+            <div class="col">
+              <?php echo $your_country->hh_taxes . '%'?>
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="col">
+              Transferts for firms:
+            </div>
+            <div class="col">
+              <?php echo $your_country->f_transferts?>
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="col">
+              Taxes for firms:
+            </div>
+            <div class="col">
+              <?php echo $your_country->f_taxes . '%'?>
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="col">
+              Fixed bonds:
+            </div>
+            <div class="col">
+              <?php if ($your_country->fixed_bonds == 1) {echo 'on sale';} else {echo 'restricted';}?>
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="col">
+              Variable bonds:
+            </div>
+            <div class="col">
+              <?php if ($your_country->variable_bonds == 1) {echo 'on sale';} else {echo 'restricted';}?>
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="col">
+              Indexed bonds:
+            </div>
+            <div class="col">
+              <?php if ($your_country->indexed_bonds == 1) {echo 'on sale';} else {echo 'restricted';}?>
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="col">
+              Amortisation Bonds:
+            </div>
+            <div class="col">
+              <?php if ($your_country->amortisation_bonds == 1) {echo 'on sale';} else {echo 'restricted';}?>
+            </div>
+          </div>
+    </div>
+</div>
+<div style="display: flex; justify-content: center;">
+    <div class="summary-container" style="flex: 0 0 50%; border: 4px solid black; border-radius: 10px; background-color: white;">
         <h2 style="display: flex; justify-content: center;">Changes</h2>
         <div id="summaryList"></div>
     </div>
 </div>
 
+
+
 <script>
     var credits = 20;
+    // let commands = {};
+    // commands['percent_rate'] = <?php $your_country->percent_rate ?>;
+    // console.log(commands);
     document.getElementById('credits').textContent = credits;
     var commands = {};
     document.querySelectorAll('.submitButton').forEach(button => {
@@ -383,7 +495,11 @@ $message = $country['message'];
         summaryItem.id = input_id;
 
         const itemText = document.createElement('span');
-        itemText.textContent = input_name + ': ' + text;
+        if (text > 0){
+          itemText.textContent = input_name + ': ' + '+' + text;
+        } else {
+          itemText.textContent = input_name + ': ' + text;
+        }
         summaryItem.appendChild(itemText);
 
         const removeButton = document.createElement('button');
