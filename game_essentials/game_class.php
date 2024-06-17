@@ -100,12 +100,12 @@ function set_new_country($name) {
   if (!$flag) {
   $message = 'Your country is ' . '<b>' . $name . '</b>' . ' with indicators located above';
   $this->set_new_string($name);
-  $this->set_country_data('gdp', 5000);
+  $this->set_country_data('gdp', 87151);
   $this->set_country_data('credits', 20);
   $this->set_country_data('num_of_steps', 10);
-  $this->set_country_data('gov_budget', 'balanced');
-  $this->set_country_data('inf_rate', 2);
-  $this->set_country_data('unemploym_rate', 5);
+  $this->set_country_data('gov_budget', 'deficit');
+  $this->set_country_data('inf_rate', 16);
+  $this->set_country_data('unemploym_rate', 0);
   $this->set_country_data('message', $message);
   $this->set_country_data('percent_rate', 3);
   $this->set_country_data('reservation_rate', 10);

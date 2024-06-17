@@ -1,7 +1,7 @@
 <?php
 $title = "Main Page";
-error_reporting(E_ALL);
-ini_set('display_errors', 1);
+// error_reporting(E_ALL);
+// ini_set('display_errors', 1);
 require_once('db.php');
 
 // session_start(); // Start the session at the beginning
@@ -70,7 +70,7 @@ if (isset($_POST["email"]) && isset($_POST["password"])) {
             background-size: cover;
             background-position: center;
             background-attachment: fixed;
-            height: 100vh; /* Задаем высоту равной высоте экрана */
+            height: 100vh;
         }
         #resized {
             border-radius: 20px;

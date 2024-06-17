@@ -7,8 +7,8 @@ if ($_SESSION['user_id'] == '') {
     header('Location: ../index.php');
     exit();
 }
-error_reporting(E_ALL);
-ini_set('display_errors', 1);
+// error_reporting(E_ALL);
+// ini_set('display_errors', 1);
 
 $user_id = $_SESSION["user_id"];
 $game_id = $_SESSION['game_id'];
@@ -572,7 +572,7 @@ $message = $country['message'];
                 console.log('ready user ', response);
                 let res = JSON.parse(response);
                 if (res.status === 'success') {
-                    alert('игрок готов');
+                    // alert('игрок готов');
                 } else {
                     alert('ошибка ' + res.message);
                 }

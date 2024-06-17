@@ -1,8 +1,8 @@
 <?php
 session_start();
-error_reporting(E_ALL);
 require_once('../db.php');
-ini_set('display_errors', 1);
+// error_reporting(E_ALL);
+// ini_set('display_errors', 1);
 if ($_SESSION['user_id'] == '') {
     $_SESSION['message'] = 'You need to authorise first';
     header('Location: ../index.php');
