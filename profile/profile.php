@@ -1,8 +1,6 @@
 <?php
 error_reporting(E_ALL);
 ini_set('display_errors', 1);
-
-// welcome.php
 session_start();
 if ($_SESSION['user_id'] == '') {
     $_SESSION['message'] = 'You need to authorise first';
@@ -10,22 +8,7 @@ if ($_SESSION['user_id'] == '') {
     exit();
 }
 
-
 $name = $_SESSION["name"];
-// $sql = "UPDATE users_ids 
-//         SET is_verified = 'Verified'
-//         WHERE email = '. $decoded->data->email .'";
-// $result = $conn->query($sql);
-
-// $key = '1a3LM3W966D6QTJ5BJb9opunkUcw_d09NCOIJb9QZTsrneqOICoMoeYUDcd_NfaQyR787PAH98Vhue5g938jdkiyIZyJICytKlbjNBtebaHljIR6-zf3A2h3uy6pCtUFl1UhXWnV6madujY4_3SyUViRwBUOP-UudUL4wnJnKYUGDKsiZePPzBGrF4_gxJMRwF9lIWyUCHSh-PRGfvT7s1mu4-5ByYlFvGDQraP4ZiG5bC1TAKO_CnPyd1hrpdzBzNW4SfjqGKmz7IvLAHmRD-2AMQHpTU-hN2vwoA-iQxwQhfnqjM0nnwtZ0urE6HjKl6GWQW-KLnhtfw5n_84IRQ';
-
-// if(isset($_COOKIE['token'])){
-// 	$decoded = JWT::decode($_COOKIE['token'], new Key($key, 'HS256'));
-// } else {
-// 	header('location:index.php');
-// }
-
-// echo $_COOKIE["user_id"];
 
 ?>
 
@@ -44,7 +27,7 @@ $name = $_SESSION["name"];
             background-size: cover;
             background-position: center;
             background-attachment: fixed;
-            height: 100vh; /* Задаем высоту равной высоте экрана */
+            height: 100vh;
         }
 		
     </style>

@@ -5,7 +5,7 @@ if ($_SESSION['user_id'] == '') {
   header('Location: ../index.php');
   exit();
 }
-$dbh = new PDO('mysql:dbname=web_app_econ;host=localhost', 'root', '');
+require_once('../db.php');
 $sth = $dbh->prepare("SELECT * FROM web_session WHERE cookie_id = :cookie_id and user_id = :user_id");
 $session_id = $_SESSION['session_id'];
 $user_id = $_SESSION['user_id'];

@@ -1,40 +1,45 @@
 <?php
+error_reporting(E_ALL);
+ini_set('display_errors', 1);
+require_once('../db.php');
 $error = "";
 
-$conn = new mysqli("localhost", "root", "", "web_app_econ");
-
-if ($conn->connect_error) {
-    $error = "Ошибка: " . $conn->connect_error;
-}
 
 if (isset($_POST["name"]) && isset($_POST["email"]) && isset($_POST["password"]) && isset($_POST["password2"])) {
-    $name = $conn->real_escape_string($_POST["name"]);
-    $email = $conn->real_escape_string($_POST["email"]);
-    $password = $conn->real_escape_string($_POST["password"]);
+    $name = $_POST["name"];
+    $email = $_POST["email"];
+    $password = $_POST["password"];
     $key = md5(microtime(true));
 
-    $sql2 = "SELECT * FROM users_ids WHERE email = '$email'";
-    $result = $conn->query($sql2);
+    $sql2 = "SELECT COUNT(*) FROM users_ids WHERE email = :email";
+    $sth = $dbh->prepare($sql2);
+    $sth->bindParam(':email', $email, PDO::PARAM_STR);
+    $sth->execute();
+    $num = $sth->fetchColumn();
 
-    if ($result->num_rows > 0) {
+    if ($num > 0) {
         $error = "Этот e-mail уже используется";
-    } else if (mb_strlen($_POST["password"], "UTF-8") < 8) {
+    } else if (mb_strlen($password, "UTF-8") < 8) {
         $error = "Пароль слишком короткий";
-    } else if ($_POST["password"] != $_POST["password2"]) {
+    } else if ($password != $_POST["password2"]) {
         $error = "Пароли не совпадают";
     } else {
-        $sql = "INSERT INTO users_ids (user_id, name, email, password, last_session, is_verified) VALUES ('$key', '$name', '$email', '$password', '0', 'Not Verified')";
-    
-        if ($conn->query($sql)) {
+        $hashedPassword = password_hash($password, PASSWORD_DEFAULT);
+        $sql = "INSERT INTO users_ids (user_id, name, email, password, last_session, is_verified) VALUES (:key, :name, :email, :password, '0', 'Not Verified')";
+        $sth = $dbh->prepare($sql);
+        $sth->bindParam(':key', $key, PDO::PARAM_STR);
+        $sth->bindParam(':name', $name, PDO::PARAM_STR);
+        $sth->bindParam(':email', $email, PDO::PARAM_STR);
+        $sth->bindParam(':password', $hashedPassword, PDO::PARAM_STR);
+
+        if ($sth->execute()) {
             $error = "Данные успешно добавлены";
-            // header('location: registration.php');
         } else {
-            $error = "Ошибка: " . $conn->error;
+            $error = "Ошибка при добавлении данных";
         }
     }
 }
 
-$conn->close();
 ?>
 
 

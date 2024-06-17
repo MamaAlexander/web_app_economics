@@ -1,6 +1,7 @@
 <?php
 session_start();
 include_once('game_class.php');
+require_once('../db.php');
 if ($_SESSION['user_id'] == '') {
     $_SESSION['message'] = 'You need to authorise first';
     header('Location: ../index.php');
@@ -16,7 +17,6 @@ $error = '';
 $your_country = new Country();
 $op_country = new Country();
 
-$dbh = new PDO('mysql:dbname=web_app_econ;host=localhost', 'root', '');
 $sth = $dbh->prepare("SELECT * FROM web_session WHERE cookie_id = :cookie_id and user_id = :user_id");
 $session_id = $_SESSION['session_id'];
 
@@ -32,15 +32,13 @@ $sth = $dbh->prepare("SELECT * FROM game_sessions WHERE game_id = :game_id");
 $sth->execute(array('game_id' => $game_id));
 $array2 = $sth->fetch(PDO::FETCH_ASSOC);
 
-if ($array2['country1_id'] == 0 and $array2['country2_id'] == 0) {
+if ($array2['country1_id'] == 0 && $array2['country2_id'] == 0) {
   $country = $your_country->get_country_data($_SESSION["count_id"]);
-  $dbh = new PDO('mysql:dbname=web_app_econ;host=localhost', 'root', '');
   $query = "UPDATE game_sessions SET country1_id = :value WHERE game_id = :id";
   $sth = $dbh->prepare($query);
   $sth->execute(array('value' => $country['country_id'], 'id' => $game_id));
 } else if ($array2['country1_id'] != $_SESSION['count_id'] and $array2['country2_id'] == 0) {
   $country = $your_country->get_country_data($_SESSION["count_id"]);
-  $dbh = new PDO('mysql:dbname=web_app_econ;host=localhost', 'root', '');
   $query = "UPDATE game_sessions SET country2_id = :value WHERE game_id = :id";
   $sth = $dbh->prepare($query);
   $sth->execute(array('value' => $country['country_id'], 'id' => $game_id));
@@ -56,8 +54,15 @@ if ($country['country_id'] == $array2['country1_id']) {
   $opponent_country_id = $array2['country1_id'];
   $country_id = $array2['country2_id'];
 }
+$_SESSION['op_count_id'] = $opponent_country_id;
+
+// if ($country['num_of_steps'] == 0) {
+//   $_SESSION['game_ended'] == 1;
+//   header('Location: endgame_page.php');
+//   exit;
+// }
+
 if ($array2['country2_id'] != 0 and $array2['country1_id'] != 0) {
-  $dbh = new PDO('mysql:dbname=web_app_econ;host=localhost', 'root', '');
   $sth = $dbh->prepare("SELECT * FROM country_data WHERE `country_id` = :id");
   $sth->execute(array('id' => $opponent_country_id));
   $array6 = $sth->fetch(PDO::FETCH_ASSOC);
@@ -73,7 +78,7 @@ $your_country->set_fields($country_id);
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Document</title>
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
-  <link rel="stylesheet" type="text/css" href="index.css">
+  <link rel="stylesheet" type="text/css" href="../index.css">
 </head>
 <style>
   body {
@@ -151,6 +156,13 @@ $your_country->set_fields($country_id);
     white-space: pre; /* Сохраняем изначальное форматирование */
   }
 </style>
+
+<script 
+  src="https://code.jquery.com/jquery-3.7.1.js" 
+  integrity="sha256-eKhayi8LEQwp4NKxN+CfCh+3qOVUtJn3QNZ0TciWLP4=" 
+  crossorigin="anonymous">
+</script>
+
 <body>
 <div style='margin-left: 10px; margin-top: -40px; float: left;'><h4><?php echo 'game code: ' . $_SESSION['game_id']; ?></h4></div>
 <div style="margin-top: -40px; margin-right: 15px; float: right;" id="resized"><a href="../profile/profile.php"><input type="button" name="login" class="btn btn-light" value="Go to profile"></a></div>
@@ -166,7 +178,7 @@ $your_country->set_fields($country_id);
       </div>
       <div class="col" style="margin-top: 20px; margin-bottom: 20px; margin-left: 8px; margin-right: 8px;">
         <?php
-        echo '<b>' . "GDP by PPP" . '</b>' ."<br>" . $country['gdp'];
+        echo '<b>' . "GDP per capita" . '</b>' ."<br>" . $country['gdp'];
         ?>
       </div>
       <div class="col" style="margin-top: 20px; margin-bottom: 20px; margin-left: 8px; margin-right: 8px;">
@@ -199,7 +211,7 @@ if (isset($opponent_country)) {
         echo "<b>" . $opponent_country["name"] . "</b>" . '
       </div>
       <div class="col" style="margin-top: 20px; margin-bottom: 20px; margin-left: 8px; margin-right: 8px;">';
-        echo "<b>" . "GDP by PPP" . "</b>" ."<br>" . $opponent_country["gdp"] . '
+        echo "<b>" . "GDP per capita" . "</b>" ."<br>" . $opponent_country["gdp"] . '
       </div>
       <div class="col" style="margin-top: 20px; margin-bottom: 20px; margin-left: 8px; margin-right: 8px;">';
         echo "<b>" . "State budget status" . "</b>" . "<br>" . $opponent_country["gov_budget"] . '
@@ -257,12 +269,7 @@ $message = $country['message'];
 ?>
 </div>
 
-<!-- <div style="margin-right: 20px; margin-top: 10px;">
-    <p style="text-align:right;">
-        Credits last <br>
-        <b id="credits"></b>
-    </p>
-</div> -->
+<div id="status" class="alert alert-info" style="margin-right: 30px; margin-left: 30px;"></div>
 
 <div style="margin-right: 20px; margin-top: 10px;">
     <p style="text-align:right;">
@@ -442,33 +449,54 @@ $message = $country['message'];
     </div>
 </div>
 
+<div style='display: flex; justify-content: center; padding-bottom: 35px'>
+<button id="sendButton" class="btn btn-light" style="border: 4px solid black; border-radius: 10px;">Send Data</button>
+</div>
+<div id="result"></div>
 
 
 <script>
     var credits = 20;
-    // let commands = {};
-    // commands['percent_rate'] = <?php $your_country->percent_rate ?>;
-    // console.log(commands);
+    let data = {};
+    data['percent_rate'] = <?php echo $your_country->percent_rate ?>;
+    data['reservation_rate'] = <?php echo $your_country->reservation_rate ?>;
+    data['hh_transferts'] = <?php echo $your_country->hh_transferts ?>;
+    data['hh_taxes'] = <?php echo $your_country->hh_taxes ?>;
+    data['f_transferts'] = <?php echo $your_country->f_transferts ?>;
+    data['f_taxes'] = <?php echo $your_country->f_taxes ?>;
+    data['fixed_bonds'] = <?php echo $your_country->fixed_bonds ?>;
+    data['variable_bonds'] = <?php echo $your_country->variable_bonds ?>;
+    data['indexed_bonds'] = <?php echo $your_country->indexed_bonds ?>;
+    data['amortisation_bonds'] = <?php echo $your_country->amortisation_bonds ?>;
+    
+    var user_id__1 = '';
+    var user_id__2 = '';
+    var flag = 0;
+    console.log(data);
     document.getElementById('credits').textContent = credits;
     var commands = {};
+
     document.querySelectorAll('.submitButton').forEach(button => {
-        button.addEventListener('click', function() {
-            const input = this.previousElementSibling;
-            const num = Number(this.id);
-            if (credits >= num) {
-                let userInput = input.value;
-                const input_name = input.name;
-                const input_id = input.id;
-                
-                
+    button.addEventListener('click', function() {
+        const input = this.previousElementSibling;
+        const num = Number(this.id);
+        if (credits >= num) {
+            let userInput = input.value;
+            const input_name = input.name;
+            const input_id = input.id;
+
+            if (commands.hasOwnProperty(input_id)) {
+                document.getElementById('errorMessage').textContent = 'Change something else';
+            } else {
                 if (input.tagName.toLowerCase() === 'select') {
+                    const selectedOptionId = input.options[input.selectedIndex].id;
                     userInput = input.options[input.selectedIndex].text;
-                    commands[input.id] = input.value;
-                    
+                    commands[selectedOptionId] = 1;
                 } else {
-                    commands[input.id] = Number(input.value);
+                    commands[input_id] = Number(input.value);
                 }
                 console.log(commands);
+
                 if (userInput.trim() !== "" && userInput !== "-- Choose bonds type --") {
                     addSummaryItem(userInput, input_name, num, input_id);
                     credits -= num;
@@ -481,11 +509,13 @@ $message = $country['message'];
                     }
                 }
                 document.getElementById('errorMessage').textContent = ''; // Очистить сообщение об ошибке
-            } else {
-                document.getElementById('errorMessage').textContent = "All credits wasted";
             }
-        });
+        } else {
+            document.getElementById('errorMessage').textContent = "All credits wasted";
+        }
     });
+});
+
 
     function addSummaryItem(text, input_name, num, input_id) {
         const summaryList = document.getElementById('summaryList');
@@ -516,6 +546,90 @@ $message = $country['message'];
 
         summaryList.appendChild(summaryItem);
     }
+
+    $('#sendButton').on('click', function() {
+    if (user_id__2 != user_id__1) {
+        for (let key in commands) {
+            if (data.hasOwnProperty(key)) {
+                if (key != 'bond-select') {
+                    data[key] += commands[key];
+                } else if (data[key] === 1) {
+                    data[key] -= commands[key];
+                } else if (data[key] === 0) {
+                    data[key] += commands[key];
+                }
+            }
+        }
+        $.ajax({
+            method: 'POST',
+            url: 'update_player_state.php',
+            data: {
+                user_id: <?php echo json_encode($user_id); ?>,
+                game_id: <?php echo json_encode($game_id); ?>,
+                data: data
+            },
+            success: function(response) {
+                console.log('ready user ', response);
+                let res = JSON.parse(response);
+                if (res.status === 'success') {
+                    alert('игрок готов');
+                } else {
+                    alert('ошибка ' + res.message);
+                }
+            },
+            error: function(xhr, status, error) {
+                console.error("Status: " + status);
+                console.error("Error: " + error);
+                console.error("Response Text: " + xhr.responseText);
+                alert('Произошла ошибка: ' + error);
+            }
+        });
+    }
+});
+
+    
+    $(document).ready(function() {
+      // функция для проверки того что оба игрока готовы
+      function checkGameState() {
+          $.ajax({
+              url: 'check_game_state.php',
+              method: 'GET',
+              dataType: 'json',
+              success: function(response) {
+                  user_id__2 = response.user_id;
+                  user_id__1 = response.user_id_2;
+                  console.log("Game State Response:", response);
+                  if (response.user1_ready && response.user2_ready) {
+                      flag = 0;
+                      $('#status').text('Оба игрока готовы. Начинаем новый раунд!');
+                      setTimeout(function(){ window.location.href = 'index_game.php'; }, 2000);
+                  } else if (response.user1_ready && !response.user2_ready) {
+                      flag = 1;
+                      $('#status').text('Игрок 1 сделал ход. Ожидание игрока 2...');
+                  } else if (!response.user1_ready && response.user2_ready) {
+                      flag = 1;
+                      $('#status').text('Игрок 2 сделал ход. Ожидание игрока 1...');
+                  } else if (!response.user1_ready && !response.user2_ready && response.update) {
+                      flag = 0;
+                      $('#status').text('Оба игрока готовы. Начинаем новый раунд!');
+                      setTimeout(function(){ window.location.href = 'index_game.php'; }, 2000);
+                  }
+                  console.log(flag);
+              }, 
+              error: function(xhr, status, error) {
+                  console.error("Status: " + status);
+                  console.error("Error: " + error);
+                  console.error("Response Text: " + xhr.responseText);
+                  alert('Произошла ошибка: ' + error);
+              }
+          });
+      }
+
+      // ставим интервал проверки раз в 2 секунды
+      setInterval(checkGameState, 2000);
+    });
+
+
 </script>
 
 <style>
