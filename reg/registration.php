@@ -4,7 +4,6 @@ ini_set('display_errors', 1);
 require_once('../db.php');
 $error = "";
 
-
 if (isset($_POST["name"]) && isset($_POST["email"]) && isset($_POST["password"]) && isset($_POST["password2"])) {
     $name = $_POST["name"];
     $email = $_POST["email"];

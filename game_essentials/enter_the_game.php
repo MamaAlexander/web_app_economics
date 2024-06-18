@@ -13,6 +13,7 @@ $session_id = $_SESSION['session_id'];
 $user_id = $_SESSION['user_id'];
 $sth->execute(array('cookie_id' => $session_id, 'user_id' => $user_id));
 $array = $sth->fetch(PDO::FETCH_ASSOC);
+
 // Проверяем играет ли уже пользователь в этой сессии, вдруг он случайно вышел из игры
 if ($array['country_id'] == 0) {
     include_once('game_enter.html');
