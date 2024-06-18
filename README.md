@@ -1,5 +1,5 @@
 # Web-app for economics
-http://sanyaoui.beget.tech/login/index.php
+sanyaoui.beget.tech
 
 ## Project Overview
 
