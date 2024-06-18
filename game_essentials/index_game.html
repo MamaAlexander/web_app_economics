@@ -4,9 +4,8 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title><?php echo $_SESSION["name"] . "'s game";?></title>
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
   <link rel="stylesheet" type="text/css" href="../style/index.css">
-  <!-- <script src="game.js"></script> -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
 </head>
 
 <script 
@@ -18,12 +17,12 @@
 <body>
 <!-- Код игры и кнопка профиля -->
 <div style='margin-left: 10px; margin-top: -40px; float: left;'><h4><?php echo 'game code: ' . $_SESSION['game_id']; ?></h4></div>
-<div style="margin-top: -40px; margin-right: 15px; float: right;" id="resized"><a href="../profile/profile.php"><input type="button" name="login" class="btn btn-light" value="Go to profile"></a></div>
+<div style="margin-top: -40px; margin-right: 15px; float: right;" id="resized"><a href="../profile/profile.php"><input type="button" name="login" class="btn btn-light" style="border: 1px solid black; border-radius: 10px;" value="Go to profile"></a></div>
 
 <!-- Контейнер с нашими показаелями: ВВП на душу, бюджет, инфляция, безработица -->
 <div class="container" style="margin-top: 60px; padding-top: 30px;"> 
 <h4>Your country:</h4>
-  <div class="card text-dark bg-light mb-3" id ="resized" style="border-radius: 15px; outline: 4px black solid;">  
+  <div class="card text-dark bg-light mb-3" id ="resized" style="border-radius: 15px; outline: 1px black solid;">  
     <div class="row" style="align-items: center;">
       <div class="col" style="margin-top: 20px; margin-bottom: 20px; margin-left: 15px; margin-right: 8px;">
         <?php
@@ -60,7 +59,7 @@ if (isset($opponent_country)) {
   echo '
 <div class="container" style="margin-top: 30px; padding-top: 30px;"> 
 <h4>Opponent country:</h4>
-  <div class="card text-dark bg-light mb-3" id ="resized" style="border-radius: 15px; outline: 4px black solid;">  
+  <div class="card text-dark bg-light mb-3" id ="resized" style="border-radius: 15px; outline: 1px black solid;">  
     <div class="row" style="align-items: center;">
       <div class="col" style="margin-top: 20px; margin-bottom: 20px; margin-left: 15px; margin-right: 8px;">';
         echo "<b>" . $opponent_country["name"] . "</b>" . '
@@ -84,10 +83,10 @@ if (isset($opponent_country)) {
   echo 
   '<div class="container" style="margin-top: 30px; padding-top: 30px;"> 
     <h4>Opponent country:</h4>
-    <div class="card text-dark bg-light mb-3" id ="resized">  
+    <div class="card text-dark bg-light mb-3" id ="resized" style="border-radius: 15px; outline: 1px black solid;">  
       <div class="row" style="align-items: center;">
         <div class="col" style="margin-top: 20px; margin-bottom: 20px; margin-left: 15px; margin-right: 8px;">
-          Opponent is not loggined yet <3 <br>
+          Opponent is not loggined yet &#x1F92B <br>
           Wait him to login and reload the page
         </div>
       </div>
@@ -100,7 +99,7 @@ if (isset($opponent_country)) {
 <?php include_once('messages_errors.php'); ?>
 
 <!-- Статус игроков -->
-<div id="status" class="alert alert-info" style="margin-right: 30px; margin-left: 30px;"></div>
+<div id="status" class="alert alert-info" style="border-radius: 20px; margin-top: 20px; margin-right: 30px; margin-left: 30px; display: none;"></div>
 
 <!-- Оставшееся количество кредитов -->
 <div style="margin-right: 20px; margin-top: 10px;">
@@ -130,56 +129,56 @@ if (isset($opponent_country)) {
                 <!-- Финансовый рынок -->
                 <details>
                     <summary class="no-marker" style="margin-top: 20px; width: fit-content;"><h4>Finance market</h4></summary>
-                    <div class="input-group">
+                    <div class="input-group" data-bs-toggle="tooltip" data-bs-placement="right" title="Costs 8 credits">
                         <label for="financeInput"> &emsp; Change <br>  &emsp; percent rate</label>
-                        <input type="number" id="percent_rate" name="Change percent rate in finance market" class="form-control" style="border-radius: 15px; margin-right: 20px;"/>
-                        <button class="submitButton" id="4">Submit</button>
+                        <input type="number" id="percent_rate" name="Change percent rate in finance market" class="form-control" style="border-radius: 15px; margin-right: 20px;" placeholder="8 credits"/>
+                        <button class="submitButton" id="8">Submit</button>
                     </div>
-                    <div class="input-group">
+                    <div class="input-group" data-bs-toggle="tooltip" data-bs-placement="right" title="Costs 7 credits">
                         <label for="reservationInput">&emsp; Change <br> &emsp; reservation rate</label>
-                        <input type="number" id="reservation_rate" name="Change reservation rate in finance market" class="form-control" style="border-radius: 15px; margin-right: 20px;"/>
-                        <button class="submitButton" id="5">Submit</button>
+                        <input type="number" id="reservation_rate" name="Change reservation rate in finance market" class="form-control" style="border-radius: 15px; margin-right: 20px;" placeholder="7 credits"/>
+                        <button class="submitButton" id="7">Submit</button>
                     </div>
-                    <div class="input-group">
+                    <div class="input-group" data-bs-toggle="tooltip" data-bs-placement="right" title="Costs 6 credits">
                         <label for="bond-select">&emsp; Issue of <br> &emsp; government bonds</label>
-                        <select name="Issue of government bonds in finance market" id="bond-select" class="form-control" style="flex: 0.5; margin-right: 20px; border-radius: 15px;">
-                            <option value="0" id="0">--Choose bonds type--</option>
+                        <select name="Issue of government bonds in finance market" id="bond-select" class="form-control" style="flex: 0.5; margin-right: 20px; border-radius: 15px;" placeholder="6 credits"/>
+                            <option value="0" id="0">-- 6 credits --</option>
                             <option value="Fixed coupon bonds" id="fixed_bonds">Fixed coupon bonds</option>
                             <option value="Variable coupon bonds" id="variable_bonds">Variable coupon bonds</option>
                             <option value="Bonds with indexed par value" id="indexed_bonds">Bonds with indexed par value</option>
                             <option value="Bonds with debt amortization" id="amortisation_bonds">Bonds with debt amortization</option>
                         </select>
-                        <button class="submitButton" id="5">Submit</button>
+                        <button class="submitButton" id="6">Submit</button>
                     </div>
                 </details>
 
                 <!-- Домохозяйства -->
                 <details>
                     <summary class="no-marker" style="margin-top: 10px; width: fit-content;"><h4>Households</h4></summary>
-                    <div class="input-group">
+                    <div class="input-group" data-bs-toggle="tooltip" data-bs-placement="right" title="Costs 5 credits">
                         <label for="transfersInput">&emsp; Transfers</label>
-                        <input type="number" id="hh_transferts" name="Households transfers" class="form-control" style="border-radius: 15px; margin-right: 20px;"/>
-                        <button class="submitButton" id="3">Submit</button>
-                    </div>
-                    <div class="input-group">
-                        <label for="taxesInput">&emsp; Taxes</label>
-                        <input type="number" id="hh_taxes" name="Households taxes" class="form-control" style="border-radius: 15px; margin-right: 20px;"/>
+                        <input type="number" id="hh_transferts" name="Households transfers" class="form-control" style="border-radius: 15px; margin-right: 20px;" placeholder="5 credits"/>
                         <button class="submitButton" id="5">Submit</button>
+                    </div>
+                    <div class="input-group" data-bs-toggle="tooltip" data-bs-placement="right" title="Costs 8 credits">
+                        <label for="taxesInput">&emsp; Taxes</label>
+                        <input type="number" id="hh_taxes" name="Households taxes" class="form-control" style="border-radius: 15px; margin-right: 20px;" placeholder="8 credits"/>
+                        <button class="submitButton" id="8">Submit</button>
                     </div>
                 </details>
 
                 <!-- Фирмы -->
                 <details>
                     <summary class="no-marker" style="margin-top: 10px; width: fit-content;"><h4>Firms</h4></summary>
-                    <div class="input-group">
+                    <div class="input-group" data-bs-toggle="tooltip" data-bs-placement="right" title="Costs 5 credits">
                         <label for="firmTransfersInput">&emsp; Transfers</label>
-                        <input type="number" id="f_transferts" name="Firm transfers" class="form-control" style="border-radius: 15px; margin-right: 20px;"/>
-                        <button class="submitButton" id="4">Submit</button>
+                        <input type="number" id="f_transferts" name="Firm transfers" class="form-control" style="border-radius: 15px; margin-right: 20px;" placeholder="5 credits"/>
+                        <button class="submitButton" id="5">Submit</button>
                     </div>
-                    <div class="input-group">
+                    <div class="input-group" data-bs-toggle="tooltip" data-bs-placement="right" title="Costs 8 credits">
                         <label for="firmTaxesInput">&emsp; Taxes</label>
-                        <input type="number" id="f_taxes" name="Firm taxes" class="form-control" style="border-radius: 15px; margin-right: 20px;"/>
-                        <button class="submitButton" id="6">Submit</button>
+                        <input type="number" id="f_taxes" name="Firm taxes" class="form-control" style="border-radius: 15px; margin-right: 20px;" placeholder="8 credits"/>
+                        <button class="submitButton" id="8">Submit</button>
                     </div>
                 </details>
 
@@ -189,7 +188,8 @@ if (isset($opponent_country)) {
 
     <!-- Контейнер индикаторов расположенный на странице справа -->
     <!-- Эти переменные берутся из предыдущего хода игры -->
-    <div class="summary-container" style="flex: 0.55; border: 4px solid black; border-radius: 10px; background-color: white;">
+    <div class="summary-container" style="flex: 0.55; border: 1px solid black; border-radius: 10px; background-color: white;">
+    <div style="padding-left: 8px; padding-right: 8px; padding-top: 8px; padding-bottom: 8px;">
         <h2 style="display: flex; justify-content: center;">Indicators</h2>
           <div class="row">
             <div class="col">
@@ -282,18 +282,21 @@ if (isset($opponent_country)) {
           </div>
     </div>
 </div>
+</div>
 
 <!-- Столбец изменений, которые вы внесли, интерактивный -->
 <div style="display: flex; justify-content: center;">
-    <div class="summary-container" style="flex: 0 0 50%; border: 4px solid black; border-radius: 10px; background-color: white;">
-        <h2 style="display: flex; justify-content: center;">Changes</h2>
-        <div id="summaryList"></div>
+    <div class="summary-container" style="flex: 0 0 50%; border: 1px solid black; border-radius: 15px; background-color: white;">
+        <div style="padding-top: 10px;">
+            <h2 style="display: flex; justify-content: center; ">Changes</h2>
+            <div id="summaryList"></div>
+        </div>
     </div>
 </div>
 
 <!-- Кнопка загрузить данные, которая запускает AJAX-запрос -->
-<div style='display: flex; justify-content: center; padding-bottom: 35px'>
-<button id="sendButton" class="btn btn-light" style="border: 4px solid black; border-radius: 10px;">Send Data</button>
+<div style='display: flex; justify-content: center; padding-bottom: 35px; margin-top: 18px'>
+<button id="sendButton" class="btn btn-light" style="border: 1px solid black; border-radius: 10px;">Ready for the next round</button>
 </div>
 <div id="result"></div>
 
@@ -340,7 +343,7 @@ if (isset($opponent_country)) {
                 }
                 console.log(commands);
 
-                if (userInput.trim() !== "" && userInput !== "-- Choose bonds type --") {
+                if (userInput.trim() !== "" && userInput !== "-- 6 credits --") {
                     addSummaryItem(userInput, input_name, num, input_id);
                     credits -= num;
                     document.getElementById('credits').textContent = credits;
@@ -444,17 +447,17 @@ if (isset($opponent_country)) {
                   console.log("Game State Response:", response);
                   if (response.user1_ready && response.user2_ready) {
                       flag = 0;
-                      $('#status').text('Оба игрока готовы. Начинаем новый раунд!');
+                      $('#status').text('Starting new round!').show();
                       setTimeout(function(){ window.location.href = 'index_game.php'; }, 2000);
                   } else if (response.user1_ready && !response.user2_ready) {
                       flag = 1;
-                      $('#status').text('Игрок 1 сделал ход. Ожидание игрока 2...');
+                      $('#status').text('Waiting for player 2 ...').show();
                   } else if (!response.user1_ready && response.user2_ready) {
                       flag = 1;
-                      $('#status').text('Игрок 2 сделал ход. Ожидание игрока 1...');
+                      $('#status').text('Waiting for player 1 ...').show();
                   } else if (!response.user1_ready && !response.user2_ready && response.update) {
                       flag = 0;
-                      $('#status').text('Оба игрока готовы. Начинаем новый раунд!');
+                      $('#status').text('Starting new round!').show();
                       setTimeout(function(){ window.location.href = 'index_game.php'; }, 2000);
                   }
                   console.log(flag);

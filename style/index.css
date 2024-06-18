@@ -1,4 +1,4 @@
-.form_inputs--input--wfn0T {
+/* .form_inputs--input--wfn0T {
     color: var(--color-text, #282828);
     display: block;
     width: 100%;
@@ -18,7 +18,7 @@
 body {
     margin: 0;
     padding: 0;
-    background-image: url(v904-nunny-012.jpg);
+    background-image: url(car_vehicle_black_cars_Nissan_Nissan_GT_R_R35-1724695.jpg);
     background-size: cover;
     background-position: center;
     background-attachment: fixed;
@@ -30,7 +30,7 @@ body {
     display-flex: center;
     margin-right: 0px;
     margin-left: 0px;
-    outline: 4px black solid;
+    outline: 0px black solid;
 }
 input {
     border-radius: 10px; 
@@ -48,15 +48,15 @@ input {
 .summary-container {
     overflow-y: auto;
     max-height: 400px;
-}
+}*/
 .summary-item {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    margin: 5px 0;
+    margin: 10px 10px;
     padding: 5px;
-    border: 1px solid #ddd;
-    border-radius: 3px;
+    border: 1px solid #c0c0c0;
+    border-radius: 10px;
 }
 .summary-item button {
     margin-left: 10px;
@@ -78,16 +78,17 @@ input {
     transition: color 0.15s ease-in-out, background-color 0.15s ease-in-out, border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
     color: #212529;
     background-color: #f8f9fa;
-    border-color: #f8f9fa;
+    border-color: #000000;
     margin-left: auto;
     margin-right: 0;
 }
+/*
 .parentContainer {
     overflow: hidden; 
     display: flex; 
     justify-content: flex-end;
-    padding-right: 1rem; /* Добавлено, если нужно больше пространства */
-}
+    padding-right: 1rem; /* Добавлено, если нужно больше пространства 
+} */
 .pre-tab {
   white-space: pre; /* Сохраняем изначальное форматирование */
 }
@@ -126,4 +127,4 @@ details summary.no-marker::-webkit-details-marker {
   display: inline-block;
   height: 100%;
   vertical-align: middle;	
-}
+} 

@@ -96,23 +96,23 @@ function set_new_country($name) { // Создание новой страны с
   if (!$flag) {
   $message = 'Your country is ' . '<b>' . $name . '</b>' . ' with indicators located above';
   $this->set_new_string($name);
-  $this->set_country_data('gdp', 87151);
+  $this->set_country_data('gdp', 1521071);
   $this->set_country_data('credits', 20);
   $this->set_country_data('num_of_steps', 10);
   $this->set_country_data('gov_budget', 'deficit');
   $this->set_country_data('inf_rate', 16);
-  $this->set_country_data('unemploym_rate', 0);
+  $this->set_country_data('unemploym_rate', 4);
   $this->set_country_data('message', $message);
   $this->set_country_data('percent_rate', 3);
-  $this->set_country_data('reservation_rate', 10);
-  $this->set_country_data('hh_transferts', 100000);
-  $this->set_country_data('hh_taxes', 15);
-  $this->set_country_data('f_transferts', 100000);
-  $this->set_country_data('f_taxes', 20);
-  $this->set_country_data('fixed_bonds', 1);
+  $this->set_country_data('reservation_rate', 3);
+  $this->set_country_data('hh_transferts', 7500000000000);
+  $this->set_country_data('hh_taxes', 17);
+  $this->set_country_data('f_transferts', 19500000);
+  $this->set_country_data('f_taxes', 30);
+  $this->set_country_data('fixed_bonds', 0);
   $this->set_country_data('variable_bonds', 0);
   $this->set_country_data('indexed_bonds', 0);
-  $this->set_country_data('amortisation_bonds', 1);
+  $this->set_country_data('amortisation_bonds', 0);
   }
 }
 function get_country_data($count_id) { // Возвращение словаря {column_name: value} для страны с ID = $count_id
@@ -148,28 +148,27 @@ function get_country_data($count_id) { // Возвращение словаря 
       $num_of_steps = $count_data['num_of_steps'] - 1;
     }
 
-    $Current_Expenditures = 0.3 * $data['hh_transferts'] - $data['indexed_bonds'] * rand(0, 10) * 0.3 + $data['amortisation_bonds'] * rand(0, 10) * 0.3;
-    $Capital_Expenditures = 0.03 * $data['f_transferts'] - 0.04 * $data['percent_rate'] + $this->gdp * ($data['percent_rate']/100) * $data['fixed_bonds'];
-    $Defense_Expenditures = 0.05 * ($data['hh_taxes'] / 100) + 0.04 * ($data['f_taxes'] / 100) + 0.1 * $data['hh_transferts'];
-    $Social_Programs_Expenditures = 0.2 * $data['hh_transferts'] + 0.1 * ($data['hh_taxes'] / 100);
+    $Capital_Expenditures = 4000000000000; //0.03 * $data['f_transferts']/25000000 - 0.04 * $data['percent_rate'] + $this->gdp * ($data['percent_rate']/100) * $data['fixed_bonds'];
+    $Defense_Expenditures = 11000000000000;
+    $Social_Programs_Expenditures = $data['hh_transferts'] + $data['f_transferts'];
 
-    $G = $Current_Expenditures + $Capital_Expenditures + $Defense_Expenditures + $Social_Programs_Expenditures;
-    $C = -0.4 * $this->gdp + 0.3 * $data['hh_transferts'] * (1 - $data['hh_taxes'] / 100) + $data['variable_bonds'] * (rand(1, 50)/100) * $this->gdp;
-    $I = -0.3 * $this->gdp - 0.05 * $data['percent_rate']/100 + 0.02 * $data['f_transferts'] - 0.1 * $data['f_taxes'] + $data['variable_bonds'] * (rand(1, 50)/100) * $this->gdp;
+    $G = $Capital_Expenditures + $Defense_Expenditures + $Social_Programs_Expenditures;
+    $C = (1 - $data['hh_taxes'] / 100)*0.0004*0.33*$this->gdp * (1 + $this->inf_rate/100);//-0.4 * $this->gdp + 0.3 * $data['hh_transferts'] * (1 - $data['hh_taxes'] / 100)/1460000 + $data['variable_bonds'] * (rand(1, 50)/100) * $this->gdp;
+    $I = (1 - $this->percent_rate/100)*(1 - $data['f_taxes']/100)*(1/$data['reservation_rate'])*((1 - $data['hh_taxes'] / 100)*0.0004*0.66*$this->gdp * (1 + $this->inf_rate/100) + 0.33*$this->gdp*2500000);//-0.3 * $this->gdp - 0.05 * $data['percent_rate']/100 + 0.02 * $data['f_transferts']/25000000 - 0.1 * $data['f_taxes'] + $data['variable_bonds'] * (rand(1, 50)/100) * $this->gdp;
 
-    $gdp = $C + $G + $I;
+    $gdp = ($C + $G + $I)/1460000;
 
-    $ind_gov_budget = (1250 - (rand(100, 1000) - $this->gdp / 100)) * ($this->gdp / 1250) * $data['hh_taxes'] / 100 - $G;
-    if ($ind_gov_budget <= 5000 && $ind_gov_budget >= - 5000) {
+    $ind_gov_budget = 1460000*0.0004*$this->gdp*(1 - $data['hh_taxes']/100) + 25000000*2666666*0.0004*$this->gdp*(1 - $data['f_taxes']/100) - $G;
+    if ($ind_gov_budget <= 100000 && $ind_gov_budget >= - 100000) {
         $gov_budget = 'balanced';
-    } elseif ($ind_gov_budget > 5000) {
+    } elseif ($ind_gov_budget > 100000) {
         $gov_budget = 'surplus';
     } else {
         $gov_budget = 'deficit';
     }    
 
     $CPI_cur = ($gdp / $this->gdp) * 100;
-    $inf_rate = ($CPI_cur - 100) / 100 + $data['fixed_bonds'] * (rand(1, 3)/100) - $data['indexed_bonds'] * rand(0, 10)/1000;
+    $inf_rate = ($CPI_cur - 100) / 100 + $data['fixed_bonds'] * (rand(1, 3)/100) - $data['indexed_bonds'] * rand(0, 3)/100;
 
     $unemploym_rate = 0.046 + ($inf_rate - $this->inf_rate) * 0.02;
 

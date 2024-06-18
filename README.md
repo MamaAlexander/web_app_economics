@@ -1,41 +1,43 @@
 # Web-app for economics
 
-# Web Economics Game
-
 ## Project Overview
 
-This project is a web-based economics game where players manage a state and compete against another state to achieve a higher index. The goal is to outperform the opposing state by strategically adjusting various economic parameters over the course of 10 turns.
+Данный сайт представляет собой экономическую игру, в которой состязуаются 2 государства. Конечный итог этой игры - увеличить индекс своей страны путем принятия различных стратегических решений, которые позволят увеличить показатели страны. 
 
 ## Gameplay
 
-In this game, players can adjust the following economic indicators:
+В этой игре пользователь может изменять следующие экономические показатели:
 
-- Percent rate
-- Reservation rate
-- Transferts for households
-- Taxes for households
-- Transferts for firms
-- Taxes for firms
-- Fixed bonds
-- Variable bonds
-- Indexed bonds
-- Amortisation Bonds
+- Процентная ставка
+- Норма резервирования
+- Трансферты для домохозяйств
+- Налоги для домохозяйств
+- Трансферты для фирм
+- Налоги для фирм
+- Облигации с фиксированной ставкой купона
+- Облигации с переменной ставкий купона
+- Индексируемые облигации
+- Амортизируемые облигации
 
+
+Всего игроки имеют 10 ходов. На каждый ход дается 20 кредитов, которые являются эквивалентом времени в реальной жизни (невозможно принять сразу много решений по политике страны). Разные изменения стоят разное количество кредитов, поэтому необходимо тратить их рационально. 
+
+Все изменения, проведенные в течение хода, можно отменить до того, как вы нажали на кнопку "Ready for the next round".
 ### Key Metrics
 
-Based on these adjustments, the game calculates the following key metrics for each state:
+После проведения изменений в политике страны, изменяются следующие показатели:
 
-- GDP per capita
-- State budget status
-- Rate of inflation
-- Unemployment rate
+- ВВП на душу населения
+- Статус государственного бюджета
+- Процент инфляции
+- Процент безработицы
 
 ### Victory Conditions
 
-To win the game, your state's index must be higher than that of the opposing state. The index is calculated using the following formula:
+Для того, чтобы выиграть в игре необходимо обойти страну оппонента по показателю индекса страны, который рассчитывается следующим образом:
 
 $ Country \> index = 0.2 \cdot GDP_{per \> capita}+ 0.4 \cdot Budget + 0.3 \cdot Inflation \> rate + 0.3 * Unemployment \> rate$ \
-where 
+где 
 $$Budget = \begin{cases} 
 0, \> if \> budget \> status \> is \> deficit\\
 1, \> if \> budget \> status \> is \> surplus\\

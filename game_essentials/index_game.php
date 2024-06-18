@@ -7,8 +7,8 @@ if ($_SESSION['user_id'] == '') {
     header('Location: ../login/index.php');
     exit();
 }
-error_reporting(E_ALL);
-ini_set('display_errors', 1);
+// error_reporting(E_ALL);
+// ini_set('display_errors', 1);
 
 $user_id = $_SESSION["user_id"];
 $game_id = $_SESSION['game_id'];
@@ -38,11 +38,13 @@ if ($array2['country1_id'] == 0 && $array2['country2_id'] == 0) {
   $query = "UPDATE game_sessions SET country1_id = :value WHERE game_id = :id";
   $sth = $dbh->prepare($query);
   $sth->execute(array('value' => $country['country_id'], 'id' => $game_id));
+  // $your_country->modify_country_data();
 } else if ($array2['country1_id'] != $_SESSION['count_id'] and $array2['country2_id'] == 0) {
   $country = $your_country->get_country_data($_SESSION["count_id"]);
   $query = "UPDATE game_sessions SET country2_id = :value WHERE game_id = :id";
   $sth = $dbh->prepare($query);
   $sth->execute(array('value' => $country['country_id'], 'id' => $game_id));
+  // $your_country->modify_country_data();
 } else {
   $country = $your_country->get_country_data($_SESSION["count_id"]);
 }

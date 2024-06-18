@@ -1,6 +1,6 @@
 <?php
-// error_reporting(E_ALL);
-// ini_set('display_errors', 1);
+error_reporting(E_ALL);
+ini_set('display_errors', 1);
 require_once('../db.php');
 $error = "";
 
@@ -39,73 +39,5 @@ if (isset($_POST["name"]) && isset($_POST["email"]) && isset($_POST["password"])
         }
     }
 }
-
+include_once('registration.html');
 ?>
-
-
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link rel="stylesheet" type="text/css" href="../style/index.css">
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
-    <title>Регистрация</title>
-</head>
-<body>
-<div class="container">
-    		<h1 class="text-center mt-5 mb-5">Web App for Economics</h1>
-    		<div class="row">
-    			<div class="col-md-4">&nbsp;</div>
-    			<div class="col-md-4">
-
-    <?php
-    if($error !== '') {
-        if($error == "Данные успешно добавлены") {
-            echo '<div class="alert alert-info">'.$error.'</div>';
-        } else {
-            echo '<div class="alert alert-danger">'.$error.'</div>';
-        }
-    }
-    ?>
-
-<div class='d-flex justify-content-center'>
-<object type="image/svg+xml" data="../style/icon.svg">
-            </object>
-            </div>
-            <div class='d-flex justify-content-center'><h2>Sign up</h2></div>
-		    		<!-- <div class="card"> -->
-		    			<div class="card-body">
-		    				<form method="post">
-                            <div class="mb-3">
-			    					<input type="name" name="name" class="form-control" id='resized' placeholder="Name" required />
-			    				</div>
-		    					<div class="mb-3">
-			    					<input type="email" name="email" class="form-control" id='resized' placeholder="Email" required />
-			    				</div>
-			    				<div class="mb-3">
-			    					<input type="password" name="password" class="form-control" id='resized' placeholder="Password" required />
-			    				</div>
-			    				<div class="mb-3">
-			    					<input type="password" name="password2" class="form-control" id='resized' placeholder="Password again" required />
-			    				</div>
-			    				<div class="text-center">
-			    					<input type="submit" class="btn btn-dark" value="Sign up" />
-                                    <a href="../login/index.php"><input type="button" class="btn btn-light" value="Log in"></a>
-			    				</div>
-		    				</form>
-		    			</div>
-		    		<!-- </div> -->
-		    	</div>
-	    	</div>
-    	</div>
-    <br>
-</body>
-</html>
-
-
-
-
-
-
-            
