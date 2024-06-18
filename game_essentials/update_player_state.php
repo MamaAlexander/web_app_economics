@@ -1,4 +1,5 @@
 <?php
+// файл изменения статуса пользоателя на 'готов' и изменяем показатели страны у игрока
 session_start();
 // error_reporting(E_ALL);
 // ini_set('display_errors', 1);
@@ -26,17 +27,21 @@ if (isset($_POST['user_id']) && isset($_POST['game_id']) && isset($_POST['data']
         exit;
     }
     $updateQuery = '';
+
+    // задаем столбец user1/2_ready = 1 и user_id значеие айди последнего пользователя который заслал изменения, 
+    // далее это понадобится чтобы заблокировать его кнопку до следующего раунда
     if ($result['user1_id'] == $user_id) {
         $updateQuery = "UPDATE game_sessions SET user1_ready = 1, user_id = '$user_id' WHERE game_id = ?";
     } else if ($result['user2_id'] == $user_id) {
         $updateQuery = "UPDATE game_sessions SET user2_ready = 1, user_id = '$user_id' WHERE game_id = ?";
     }
-
     $sth = $dbh->prepare($updateQuery);
     $sth->bindParam(1, $game_id);
     
+    // Изменяем показатели страны у нашего игрока
     $your_country->modify_country_data($data, 1);
 
+    // Возвращаем переменные из AJAX-запроса
     if ($sth->execute()) {
         $query2 = "SELECT user1_ready, user2_ready FROM game_sessions WHERE game_id = ?";
         $sth2 = $dbh->prepare($query2);
@@ -49,7 +54,6 @@ if (isset($_POST['user_id']) && isset($_POST['game_id']) && isset($_POST['data']
             'user1_ready' => $result2['user1_ready'],
             'user2_ready' => $result2['user2_ready']
         ]);
-
     } else {
         echo json_encode([
             'status' => 'error',

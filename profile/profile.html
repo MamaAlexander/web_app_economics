@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+  	<head>
+    	<meta charset="utf-8">
+    	<meta name="viewport" content="width=device-width, initial-scale=1">
+		<link rel="stylesheet" type="text/css" href="../style/index.css">
+		<script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+		<script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+		<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+    	<title>Профиль</title>
+  	</head>
+  	<body>
+    	<div class="container">
+    		<h1 class="text-center mt-5 mb-5">Profile</h1>
+    		<div class="text-center">
+    			<h1>Welcome <b> <?php echo $_SESSION["name"]; ?> </b></h1>
+				<div style="margin-top: 40px; margin-left: 60px; margin-right: 60px; padding-bottom: 40px;">
+					<h3><b>Web-app for economics</b></h3><br>
+
+					<div style="text-align: left;">
+					This project is a web-based economics game where players manage a state and compete against another state to achieve a higher index. The goal is to outperform the opposing state by strategically adjusting various economic parameters over the course of 10 turns.<br>
+					</div>
+					<br>
+					<h4>Gameplay</h4>
+					<div style="text-align: left;">
+					In this game, players can adjust the following economic indicators:<br>
+
+					<br>
+					<li>Percent rate</li>
+					<li>Reservation rate</li>
+					<li>Transferts for households</li>
+					<li>Taxes for households</li>
+					<li>Transferts for firms</li>
+					<li>Taxes for firms</li>
+					<li>Fixed bonds</li>
+					<li>Variable bonds</li>
+					<li>Indexed bonds</li>
+					<li>Amortisation Bonds</li>
+					</div>
+					<br>
+
+					<h4>Key Metrics</h4>
+					<div style="text-align: left;">
+					Based on these adjustments, the game calculates the following key metrics for each state:<br>
+
+					<br>
+					<li>GDP per capita</li>
+					<li>State budget status</li>
+					<li>Rate of inflation</li>
+					<li>Unemployment rate</li>
+					</div>
+
+					<br>
+					<h4>Victory Conditions</h4>
+					<div style="text-align: left;">
+					To win the game, your state's index must be higher than that of the opposing state. The index is calculated using the following formula:<br>
+					
+					<div>
+					$$ Country \ index = 0.2 \cdot GDP_{per \> capita}+ 0.4 \cdot Budget + 0.3 \cdot Inflation \> rate + 0.3 \cdot Unemployment \> rate$$
+					</div>
+					
+					<div id="markdownContent">
+					$$where \> Budget = \begin{cases} 
+					0, \> if \> budget \> status \> is \> deficit\\
+					1, \> if \> budget \> status \> is \> surplus\\
+					2, \> if \> budget \> status \> is \> balanced\\
+					\end{cases}$$
+					</div>
+					</div>
+					<a href="../game_essentials/enter_the_game.php"><input type="button" name="button" class="btn btn-dark" value="Go to the game"></a>
+					
+					<a href="../login/logout.php"><input type="button" name="button" class="btn btn-light" value="Exit"></a>
+				</div>
+			</div>
+    	</div>
+  	</body>
+</html>

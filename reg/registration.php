@@ -48,26 +48,9 @@ if (isset($_POST["name"]) && isset($_POST["email"]) && isset($_POST["password"])
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" type="text/css" href="../style/index.css">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
-    <style>
-        body {
-            margin: 0;
-            padding: 0;
-            background-image: url(../v904-nunny-012.jpg);
-            background-size: cover;
-            background-position: center;
-            background-attachment: fixed;
-            height: 100vh; /* Задаем высоту равной высоте экрана */
-        }
-        #resized {
-            border-radius: 10px;
-            width: 300px;
-            /* text-align: center; */
-            margin-right: auto;
-	        margin-left: auto;
-            outline: 4px black solid;
-        }
-        </style>
+    <title>Регистрация</title>
 </head>
 <body>
 <div class="container">
@@ -87,7 +70,7 @@ if (isset($_POST["name"]) && isset($_POST["email"]) && isset($_POST["password"])
     ?>
 
 <div class='d-flex justify-content-center'>
-<object type="image/svg+xml" data="../icon.svg">
+<object type="image/svg+xml" data="../style/icon.svg">
             </object>
             </div>
             <div class='d-flex justify-content-center'><h2>Sign up</h2></div>
@@ -107,8 +90,8 @@ if (isset($_POST["name"]) && isset($_POST["email"]) && isset($_POST["password"])
 			    					<input type="password" name="password2" class="form-control" id='resized' placeholder="Password again" required />
 			    				</div>
 			    				<div class="text-center">
-			    					<input type="submit" name="login" class="btn btn-dark" value="Sign up" />
-                                    <a href="../index.php"><input type="button" name="login" class="btn btn-light" value="Log in"></a>
+			    					<input type="submit" class="btn btn-dark" value="Sign up" />
+                                    <a href="../login/index.php"><input type="button" class="btn btn-light" value="Log in"></a>
 			    				</div>
 		    				</form>
 		    			</div>

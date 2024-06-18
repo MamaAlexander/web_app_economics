@@ -13,7 +13,6 @@ class Country {
   public $unemploym_rate;
   public $num_of_steps;
   public $error;
-
   public $percent_rate;
   public $reservation_rate;
   public $hh_transferts;
@@ -24,10 +23,9 @@ class Country {
   public $variable_bonds;
   public $indexed_bonds;
   public $amortisation_bonds;
-  public function __construct() {
 
-  }
-  function set_fields($count_id) {
+
+  function set_fields($count_id) { // Поля класса подгружаются из базы данных где ID = $count_id
     $array = $this->get_country_data($count_id);
     $this->name = $array["name"];
     $this->gdp = $array["gdp"];
@@ -46,7 +44,7 @@ class Country {
     $this->indexed_bonds = $array["indexed_bonds"];
     $this->amortisation_bonds = $array["amortisation_bonds"];
   }
-  function set_new_string($count_name) {
+  function set_new_string($count_name) { // Создание новой строки в таблице country_data, используется в методе для создания новой страны
     try {
       $dbh = new PDO('mysql:host=localhost;dbname=web_app_econ', 'root', '');
       $count_id = md5(microtime(true));
@@ -63,12 +61,11 @@ class Country {
         $error = "Ошибка: " . $e->getMessage();
         return $error;
     } finally {
-        $dbh = null;
         $sth = null;
     }
   }
 
-  function set_country_data($field, $value) {
+  function set_country_data($field, $value) { // Обновление данных в таблице: $field - название столбца, $value - значение
   try {
     $dbh = new PDO('mysql:host=localhost;dbname=web_app_econ', 'root', '');
     $sql = "UPDATE country_data SET $field = :value WHERE country_id = :id";
@@ -80,12 +77,11 @@ class Country {
     die($e->getMessage());
     return null;
   } finally {
-    $dbh = null;
     $sth = null;
   }
 }
 
-function set_new_country($name) {
+function set_new_country($name) { // Создание новой страны с названием $name
   $dbh = new PDO('mysql:host=localhost;dbname=web_app_econ', 'root', '');
   $sth = $dbh->prepare("SELECT * FROM web_session WHERE cookie_id = :cookie_id and user_id = :user_id");
   $session_id = $_SESSION['session_id'];
@@ -119,9 +115,8 @@ function set_new_country($name) {
   $this->set_country_data('amortisation_bonds', 1);
   }
 }
-function get_country_data($count_id) {
+function get_country_data($count_id) { // Возвращение словаря {column_name: value} для страны с ID = $count_id
   $dbh = new PDO('mysql:host=localhost;dbname=web_app_econ', 'root', '');
-  // Ensure the database connection is set
   if (!isset($dbh) || $dbh === null) {
       error_log("Database connection is not set.");
       die("Database connection is not set.");
@@ -137,20 +132,18 @@ function get_country_data($count_id) {
       error_log("Ошибка подключения: " . $e->getMessage());
       die("Ошибка подключения: " . $e->getMessage());
   } finally {
-      // It's not recommended to set $dbh to null here as it will close the connection
-      // $dbh = null;
       $sth = null;
   }
 }
 
-
-  function modify_country_data($data, $flag = 0) {
-    foreach ($data as $key => $val) {
-      $this->set_country_data($key, $val);
+  function modify_country_data($data, $flag = 0) { // перед переходом к новому раунду подсчитываются значения ввп, инфляции, безработицы, бюджета
+    foreach ($data as $key => $val) {              // $data - словарь индикаторов с новыми значениями, которые нужно посчитать
+      $this->set_country_data($key, $val);         // если $flag == 1, то количество шагов уменьшается на 1
     }
     $this->set_fields($_SESSION['count_id']);
     $num_of_steps = 0;
     $count_data = $this->get_country_data($_SESSION['count_id']);
+    $num_of_steps = $count_data['num_of_steps'];
     if ($flag) {
       $num_of_steps = $count_data['num_of_steps'] - 1;
     }
@@ -188,8 +181,8 @@ function get_country_data($count_id) {
     $this->set_fields($_SESSION['count_id']);
   }
 
-  function check_winner($count_id, $op_count_id) {
-    $country_data = $this->get_country_data($count_id);
+  function check_winner($count_id, $op_count_id) {            // метод определения победителя, выдает булевое значение: 1 - если id страны выигрышный, 0 иначе
+    $country_data = $this->get_country_data($count_id);       // для победы нужно чтобы индекс моей страны был больше индекса страны противника
     $op_country_data = $this->get_country_data($op_count_id);
 
     if ($country_data['gov_budget'] == 'deficit') {
