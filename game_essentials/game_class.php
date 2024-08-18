@@ -46,7 +46,7 @@ class Country {
   }
   function set_new_string($count_name) { // Создание новой строки в таблице country_data, используется в методе для создания новой страны
     try {
-      $dbh = new PDO('mysql:host=localhost;dbname=web_app_econ', 'root', '');
+      $dbh = new PDO('mysql:host=80.85.153.48;dbname=web_app_econ', 'remboplas', '053107720User!');
       $count_id = md5(microtime(true));
       $_SESSION['count_id'] = $count_id;
       $sth = $dbh->prepare("INSERT INTO country_data (country_id, name) VALUES (:cid, :cname)");
@@ -67,7 +67,7 @@ class Country {
 
   function set_country_data($field, $value) { // Обновление данных в таблице: $field - название столбца, $value - значение
   try {
-    $dbh = new PDO('mysql:host=localhost;dbname=web_app_econ', 'root', '');
+    $dbh = new PDO('mysql:host=80.85.153.48;dbname=web_app_econ', 'remboplas', '053107720User!');
     $sql = "UPDATE country_data SET $field = :value WHERE country_id = :id";
     $sth = $dbh->prepare($sql);
     $id = $_SESSION['count_id'];
@@ -82,7 +82,7 @@ class Country {
 }
 
 function set_new_country($name) { // Создание новой страны с названием $name
-  $dbh = new PDO('mysql:host=localhost;dbname=web_app_econ', 'root', '');
+  $dbh = new PDO('mysql:host=80.85.153.48;dbname=web_app_econ', 'remboplas', '053107720User!');
   $sth = $dbh->prepare("SELECT * FROM web_session WHERE cookie_id = :cookie_id and user_id = :user_id");
   $session_id = $_SESSION['session_id'];
   $user_id = $_SESSION['user_id'];
@@ -116,7 +116,7 @@ function set_new_country($name) { // Создание новой страны с
   }
 }
 function get_country_data($count_id) { // Возвращение словаря {column_name: value} для страны с ID = $count_id
-  $dbh = new PDO('mysql:host=localhost;dbname=web_app_econ', 'root', '');
+  $dbh = new PDO('mysql:host=80.85.153.48;dbname=web_app_econ', 'remboplas', '053107720User!');
   if (!isset($dbh) || $dbh === null) {
       error_log("Database connection is not set.");
       die("Database connection is not set.");
