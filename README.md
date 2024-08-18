@@ -1,5 +1,6 @@
 # Web-app for economics
-sanyaoui.beget.tech
+
+[sanyaoui.beget.tech](http://sanyaoui.beget.tech/login/index.php)
 
 ## Project Overview
 
