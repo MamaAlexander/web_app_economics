@@ -19,6 +19,6 @@ jobs:
         username: ${{ secrets.FTP_USERNAME }}
         password: ${{ secrets.FTP_PASSWORD }}
         local-dir: ./
-        server-dir: /www/web-app-economics94.com/
+        server-dir: /web-app-economics94.com/
         protocol: ftps
         passive: true
