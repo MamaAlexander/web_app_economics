@@ -16,8 +16,8 @@ jobs:
       uses: appleboy/ssh-action@v0.1.1
       with:
         host: 80.85.153.48
-        username: ${{ secrets.SFTP_USERNAME }}
-        password: ${{ secrets.SFTP_PASSWORD }}
+        username: ${{ secrets.FTP_USERNAME }}
+        password: ${{ secrets.FTP_PASSWORD }}
         port: 22
         script: |
           cd /var/www/html/
