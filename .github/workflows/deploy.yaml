@@ -15,9 +15,9 @@ jobs:
     - name: Deploy to My Server via FTP
       uses: SamKirkland/FTP-Deploy-Action@4.1.0
       with:
-        server: 80.85.153.48  # Замените на IP-адрес вашего сервера
-        username: ${{ secrets.FTP_USERNAME }}  # Добавьте секрет с именем FTP_USERNAME в настройках вашего репозитория на GitHub
-        password: ${{ secrets.FTP_PASSWORD }}  # Добавьте секрет с именем FTP_PASSWORD в настройках вашего репозитория на GitHub
-        local-dir: ./  # Указание текущего каталога для загрузки
-        server-dir: /var/www/html/  # Укажите удаленный каталог на вашем сервере
-        protocol: ftp  # Использование FTP (можно заменить на ftps или sftp при необходимости)
+        server: 80.85.153.48
+        username: ${{ secrets.FTP_USERNAME }}
+        password: ${{ secrets.FTP_PASSWORD }}
+        local-dir: ./
+        server-dir: /var/www/html/
+        protocol: ftp
