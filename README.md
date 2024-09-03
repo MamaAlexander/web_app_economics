@@ -1,6 +1,6 @@
 # Web-app for economics
 
-[sanyaoui.beget.tech](http://sanyaoui.beget.tech/login/index.php)
+[80.85.153.48](80.85.153.48)
 
 ## Project Overview
 
