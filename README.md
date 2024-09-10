@@ -1,6 +1,5 @@
 # Web-app for economics
 
-[80.85.153.48](http://80.85.153.48/login/index.php)
 
 ## Project Overview
 
