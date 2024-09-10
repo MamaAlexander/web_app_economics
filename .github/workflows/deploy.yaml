@@ -18,8 +18,8 @@ jobs:
       uses: appleboy/ssh-action@v0.1.1
       with:
         host: 80.85.153.48
-        username: 'ftpuser'
-        password: '053107720'
+        username: 'xxx'
+        password: 'xxx'
         port: 22
         source: "./"
         target: "/var/www/html/"
