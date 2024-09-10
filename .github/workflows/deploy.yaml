@@ -1,9 +1,11 @@
-name: Deploy to My Server via FTP
+name: Deploy to My Server via SFTP
 
 on:
   push:
     branches:
       - main
+
+
 
 jobs:
   deploy:
@@ -12,13 +14,12 @@ jobs:
     - name: Checkout code
       uses: actions/checkout@v2
 
-    - name: Deploy to My Server via FTP
-      uses: SamKirkland/FTP-Deploy-Action@4.1.0
+    - name: Deploy to My Server via SFTP
+      uses: appleboy/ssh-action@v0.1.1
       with:
-        server: ftps1.us.100webspace.com
+        host: 80.85.153.48
         username: ${{ secrets.FTP_USERNAME }}
         password: ${{ secrets.FTP_PASSWORD }}
-        local-dir: ./
-        server-dir: /web-app-economics94.com/
-        protocol: ftps
-        passive: true
+        port: 22
+        source: "./"
+        target: "/var/www/html/"
